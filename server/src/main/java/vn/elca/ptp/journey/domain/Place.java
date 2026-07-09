@@ -1,7 +1,5 @@
 package vn.elca.ptp.journey.domain;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -20,38 +18,13 @@ import vn.elca.ptp.common.domain.BaseEntity;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "JOURNEY")
-public class Journey extends BaseEntity {
+@Table(name = "PLACE")
+public class Place extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String description;
-
     @ManyToOne()
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
-
-    @ManyToOne()
-    @JoinColumn(name = "place_id")
-    private Place place;
-
-    @Column(nullable = false)
-    private LocalDate startDate;
-
-    private LocalDate endDate;
-
-    @ManyToOne()
-    @JoinColumn(name = "currency_id")
-    private Currency currency;
-
-    private Long amount;
-
-    private Integer durationDay;
-
-    private Integer durationNight;
-
-    @Column(nullable = false)
-    private String status;
 }
