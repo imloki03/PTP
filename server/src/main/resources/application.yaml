@@ -12,8 +12,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        jdbc:
-          timezone: ${TZ}
   liquibase:
     change-log: classpath:db/changelog/master.yaml
     enabled: true
