@@ -31,6 +31,10 @@ public class Journey extends BaseEntity {
     private String description;
 
     @ManyToOne()
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
+
+    @ManyToOne()
     @JoinColumn(name = "place_id")
     private Place place;
 
