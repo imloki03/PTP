@@ -6,6 +6,8 @@ import static vn.elca.ptp.common.constant.MessageKey.JOURNEY_NOT_FOUND;
 import static vn.elca.ptp.common.constant.MessageKey.PLACE_NOT_FOUND;
 import static vn.elca.ptp.common.constant.MessageKey.PLACE_NOT_IN_COUNTRY;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,12 @@ public class JourneyServiceImpl implements JourneyService {
         resolveReferences(journey, request);
         journey = journeyRepository.save(journey);
         return journeyMapper.toDto(journey);
+    }
+
+    @Override
+    public Page<JourneyDTO> getJourneys(Pageable pageable) {
+        return journeyRepository.findAll(pageable)
+                .map(journeyMapper::toDto);
     }
 
     @Override

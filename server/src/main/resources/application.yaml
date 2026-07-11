@@ -19,3 +19,5 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/master.yaml
     enabled: true
+  jackson:
+    default-property-inclusion: non_null

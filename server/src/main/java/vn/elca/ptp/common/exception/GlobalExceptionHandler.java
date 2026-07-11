@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import vn.elca.ptp.common.dto.ApiResponse;
 import vn.elca.ptp.common.util.MessageBundleUtils;
 import vn.elca.ptp.journey.exception.PlaceNotInCountryException;
 
+@Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
@@ -21,30 +24,33 @@ public class GlobalExceptionHandler {
     private final MessageBundleUtils messageBundleUtils;
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleNotFound(EntityNotFoundException ex) {
+    public ResponseEntity<?> handleNotFound(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+                .body(ApiResponse.failure(ex.getMessage()));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleBadRequest(PlaceNotInCountryException ex) {
+    public ResponseEntity<?> handleBadRequest(PlaceNotInCountryException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ex.getMessage());
+                .body(ApiResponse.failure(ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .map(e -> e.getField() + ": " + e.getDefaultMessage())
                 .reduce((a, b) -> a + "; " + b)
                 .orElse(messageBundleUtils.getMessage(VALIDATION_FAILED));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(message);
+                .body(ApiResponse.failure(message));
     }
 
+    //catch concurrent update
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneral(Exception ex) {
+    public ResponseEntity<?> handleGeneral(Exception ex) {
+        log.error("Unexpected exception: ", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(messageBundleUtils.getMessage(INTERNAL_ERROR));
+                .body(ApiResponse.failure(messageBundleUtils.getMessage(INTERNAL_ERROR)));
     }
 }
