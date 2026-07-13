@@ -4,5 +4,5 @@
 td { padding: 12px; font-size: 14px; font-weight: 600; color: #202438; border-bottom: 1px dashed #e2e6ef; vertical-align: middle; }
 .truncate { max-width: 350px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .country-cell { display: flex; align-items: center; gap: 8px; }
-.flag-icon { display: inline-flex; width: 20px; height: 14px; border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+.country-cell .fi { font-size: 20px; border-radius: 2px; }
 .actions-cell { display: flex; align-items: center; justify-content: center; gap: 6px; }

@@ -21,4 +21,9 @@ export class JourneyRow {
   readonly toggle = output<void>();
   readonly edit = output<void>();
   readonly delete = output<void>();
+
+  get flagClass(): string {
+    const code = this.journey().country?.code;
+    return code ? `fi fi-${code.toLowerCase()}` : '';
+  }
 }

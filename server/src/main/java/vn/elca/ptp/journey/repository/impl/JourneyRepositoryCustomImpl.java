@@ -46,6 +46,7 @@ public class JourneyRepositoryCustomImpl implements JourneyRepositoryCustom {
                 .where(predicate)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(journey.startDate.desc())
                 .fetch();
 
         List<JourneyDTO> dtos = content.stream()
