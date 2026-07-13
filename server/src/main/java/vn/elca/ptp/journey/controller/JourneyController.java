@@ -7,6 +7,8 @@ import static vn.elca.ptp.common.constant.MessageKey.JOURNEY_CREATED;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,19 +39,15 @@ public class JourneyController {
     @PostMapping
     public ResponseEntity<?> createJourney(@Valid @RequestBody JourneyRequest request) {
         JourneyDTO journey = journeyService.createJourney(request);
-        ApiResponse<JourneyDTO> response = ApiResponse.success(
-                journey, messageBundleUtils.getMessage(JOURNEY_CREATED));
-        response.add(linkTo(methodOn(JourneyController.class).getJourney(journey.getId())).withSelfRel());
-        return ResponseEntity.created(response.getRequiredLink("self").toUri())
-                .body(response);
+        EntityModel<JourneyDTO> model = addLinks(journey);
+        return ResponseEntity.created(model.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(ApiResponse.success(model, messageBundleUtils.getMessage(JOURNEY_CREATED)));
     }
 
     @GetMapping("/{journeyId}")
     public ResponseEntity<?> getJourney(@PathVariable Long journeyId) {
-        JourneyDTO journey = journeyService.getJourney(journeyId);
-        ApiResponse<JourneyDTO> response = ApiResponse.success(journey);
-        response.add(linkTo(methodOn(JourneyController.class).getJourney(journeyId)).withSelfRel());
-        return ResponseEntity.ok(response);
+        EntityModel<JourneyDTO> model = addLinks(journeyService.getJourney(journeyId));
+        return ResponseEntity.ok(ApiResponse.success(model));
     }
 
     @GetMapping
@@ -61,11 +59,8 @@ public class JourneyController {
 
     @PutMapping("/{journeyId}")
     public ResponseEntity<?> updateJourney(@PathVariable Long journeyId, @Valid @RequestBody JourneyRequest request) {
-        JourneyDTO journey = journeyService.updateJourney(journeyId, request);
-        ApiResponse<JourneyDTO> response = ApiResponse.success(
-                journey, messageBundleUtils.getMessage(MessageKey.JOURNEY_UPDATED));
-        response.add(linkTo(methodOn(JourneyController.class).getJourney(journeyId)).withSelfRel());
-        return ResponseEntity.ok(response);
+        EntityModel<JourneyDTO> model = addLinks(journeyService.updateJourney(journeyId, request));
+        return ResponseEntity.ok(ApiResponse.success(model, messageBundleUtils.getMessage(MessageKey.JOURNEY_UPDATED)));
     }
 
     @DeleteMapping("/{journeyId}")
@@ -73,5 +68,10 @@ public class JourneyController {
         journeyService.deleteJourney(journeyId);
         return ResponseEntity.ok(ApiResponse.success(null,
                 messageBundleUtils.getMessage(MessageKey.JOURNEY_DELETED)));
+    }
+
+    private EntityModel<JourneyDTO> addLinks(JourneyDTO journey) {
+        return EntityModel.of(journey,
+                linkTo(methodOn(JourneyController.class).getJourney(journey.getId())).withSelfRel());
     }
 }

@@ -1,5 +1,8 @@
 package vn.elca.ptp.journey.mapper;
 
+import java.util.List;
+
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -16,4 +19,7 @@ public interface CountryMapper {
 
     @Named("toDtoWithCountry")
     CountryDTO toDtoWithCountry(Country country);
+
+    @IterableMapping(qualifiedByName = "toDtoWithCountry")
+    List<CountryDTO> toDto(List<Country> countries);
 }

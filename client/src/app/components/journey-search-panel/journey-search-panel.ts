@@ -1,11 +1,13 @@
-import { Component, inject, input, output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatIcon } from '@angular/material/icon';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Button } from '../../ui/button/button';
-import type { Country } from '../../models/country';
-import type { Currency } from '../../models/currency';
-import { JOURNEY_STATUS_VALUES } from '../../models/journey-status';
+import {Component, inject, OnInit, output} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {MatIcon} from '@angular/material/icon';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {Button} from '../../ui/button/button';
+import {CountryService} from '../../services/country';
+import {CurrencyService} from '../../services/currency';
+import type {Country} from '../../models/country';
+import type {Currency} from '../../models/currency';
+import {JOURNEY_STATUS_VALUES} from '../../models/journey-status';
 
 @Component({
   selector: 'app-journey-search-panel',
@@ -13,11 +15,13 @@ import { JOURNEY_STATUS_VALUES } from '../../models/journey-status';
   templateUrl: './journey-search-panel.html',
   styleUrls: ['./journey-search-panel.css'],
 })
-export class JourneySearchPanel {
+export class JourneySearchPanel implements OnInit {
   private readonly translate = inject(TranslateService);
+  private readonly countryService = inject(CountryService);
+  private readonly currencyService = inject(CurrencyService);
 
-  readonly countries = input<Country[]>([]);
-  readonly currencies = input<Currency[]>([]);
+  countries: Country[] = [];
+  currencies: Currency[] = [];
   readonly onSearch = output<void>();
   readonly onReset = output<void>();
 
@@ -32,12 +36,26 @@ export class JourneySearchPanel {
   endDate = '';
   endDateTo = '';
 
+  ngOnInit() {
+    this.countryService.getCountries().subscribe((res) => {
+      if (res.data) {
+        this.countries = res.data;
+      }
+    });
+
+    this.currencyService.getCurrencies().subscribe((res) => {
+      if (res.data) {
+        this.currencies = res.data;
+      }
+    })
+  }
+
   get countryOptions() {
-    return this.countries().map((c) => ({ value: c.id, label: `${c.code} ${c.name}` }));
+    return this.countries.map((c) => ({ value: c.id, label: `${c.name}` }));
   }
 
   get currencyOptions() {
-    return this.currencies().map((c) => ({ value: c.id, label: `${c.code} - ${c.name}` }));
+    return this.currencies.map((c) => ({ value: c.id, label: `${c.name}` }));
   }
 
   get statusOptions() {

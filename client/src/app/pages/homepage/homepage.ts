@@ -6,7 +6,6 @@ import {JourneySearchPanel} from '../../components/journey-search-panel/journey-
 import {JourneyTable} from '../../components/journey-table/journey-table';
 import type {PageEvent} from '@angular/material/paginator';
 import type {Journey} from '../../models/journey';
-import type {Country} from '../../models/country';
 import type {Currency} from '../../models/currency';
 import {JourneyService} from '../../services/journey';
 
@@ -27,7 +26,6 @@ export class Homepage implements OnInit {
     this.translate.use(lang);
   }
 
-  countries: Country[] = [];
   currencies: Currency[] = [];
   journeys: Journey[] = [];
   totalElements = 0;

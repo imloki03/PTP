@@ -10,7 +10,7 @@ describe('JourneyRow', () => {
 
   const mockJourney: Journey = {
     id: 1, name: 'Test', description: 'Desc',
-    country: { id: 1, code: 'VN', name: 'Vietnam' },
+    country: { id: 1, code: 'VN', name: 'Vietnam', places: [] },
     place: { id: 1, name: 'Hanoi' },
     startDate: '2020-09-09', endDate: '2020-09-09',
     currency: { id: 1, code: 'VND', name: 'Vietnamese Dong' },
