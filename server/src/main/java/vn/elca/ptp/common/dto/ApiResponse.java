@@ -1,8 +1,8 @@
 package vn.elca.ptp.common.dto;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class ApiResponse<T> {
+public class ApiResponse<T> extends RepresentationModel<ApiResponse<T>> {
     private boolean success;
     private String message;
     private T data;
@@ -22,17 +20,17 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> success(T data, String message) {
-        return ApiResponse.<T>builder()
-                .success(true)
-                .message(message)
-                .data(data)
-                .build();
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setSuccess(true);
+        response.setMessage(message);
+        response.setData(data);
+        return response;
     }
 
     public static <T> ApiResponse<T> failure(@NotNull String message) {
-        return ApiResponse.<T>builder()
-                .success(false)
-                .message(message)
-                .build();
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setSuccess(false);
+        response.setMessage(message);
+        return response;
     }
 }

@@ -32,5 +32,6 @@ public interface JourneyMapper {
     @Mapping(target = "currency", ignore = true)
     void updateEntity(@MappingTarget Journey journey, JourneyRequest request);
 
+    @Mapping(target = "country", source = "country", qualifiedByName = "toDto")
     JourneyDTO toDto(Journey journey);
 }

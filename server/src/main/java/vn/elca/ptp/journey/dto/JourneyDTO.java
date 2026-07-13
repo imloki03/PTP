@@ -13,7 +13,7 @@ import vn.elca.ptp.journey.domain.enums.JourneyStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JourneyDTO {
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private CountryDTO country;

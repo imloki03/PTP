@@ -1,3 +1,14 @@
-<button mat-flat-button [disabled]="disabled()" (click)="onClick.emit()" [ngClass]="'btn-' + variant()">
-  <ng-content />
+<button mat-flat-button
+        class="btn-custom"
+        [disabled]="disabled()"
+        (click)="onClick.emit()"
+        [ngClass]="['btn-' + variant(), 'btn-state-' + state()]"
+        [style.width]="width()"
+        [style.height]="height()">
+  @if (state() === 'loading') {
+    <span class="btn-spinner"></span>
+  }
+  <span [class.btn-hidden]="state() === 'loading'">
+    <ng-content />
+  </span>
 </button>

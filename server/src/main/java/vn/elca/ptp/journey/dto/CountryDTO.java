@@ -1,5 +1,7 @@
 package vn.elca.ptp.journey.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,4 +15,5 @@ public class CountryDTO {
     private Long id;
     private String name;
     private String code;
+    private List<PlaceDTO> places;
 }

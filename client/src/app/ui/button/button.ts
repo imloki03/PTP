@@ -1,6 +1,6 @@
-import { NgClass } from '@angular/common';
-import { Component, input, output } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import {NgClass} from '@angular/common';
+import {Component, input, output} from '@angular/core';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-button',
@@ -11,5 +11,8 @@ import { MatButton } from '@angular/material/button';
 export class Button {
   readonly disabled = input(false);
   readonly variant = input<'primary' | 'mint' | 'danger' | 'outline'>('primary');
+  readonly width = input<string>();
+  readonly height = input<string>();
+  readonly state = input<'default' | 'loading' | 'success' | 'error'>('default');
   readonly onClick = output<void>();
 }

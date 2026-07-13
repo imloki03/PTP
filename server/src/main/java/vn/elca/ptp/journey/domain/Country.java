@@ -1,9 +1,12 @@
 package vn.elca.ptp.journey.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +15,6 @@ import vn.elca.ptp.common.domain.BaseEntity;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "COUNTRY")
 public class Country extends BaseEntity {
@@ -22,4 +24,7 @@ public class Country extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 10)
     private String code;
+
+    @OneToMany(mappedBy = "country")
+    private List<Place> places = new ArrayList<>();
 }

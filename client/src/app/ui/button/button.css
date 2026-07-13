@@ -1,3 +1,28 @@
 :host-context(.btn-mint) .mdc-button { background-color: #1fc59b !important; color: #fff !important; }
 :host-context(.btn-danger) .mdc-button { background-color: #ff345b !important; color: #fff !important; }
 :host-context(.btn-outline) .mdc-button { background-color: transparent !important; color: #9ba1b6 !important; border: 2px solid #079cf1 !important; }
+
+:host-context(.btn-state-loading) .mdc-button { position: relative; }
+:host-context(.btn-state-success) .mdc-button { background-color: #28a745 !important; }
+:host-context(.btn-state-error) .mdc-button { background-color: #dc3545 !important; }
+
+.btn-custom {
+  border-radius: 0.7rem;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: btn-spin 0.6s linear infinite;
+  vertical-align: middle;
+}
+
+.btn-hidden { visibility: hidden; }
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}

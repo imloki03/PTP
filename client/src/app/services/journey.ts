@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import type { Observable } from 'rxjs';
 import type { ApiResponse } from '../models/api-response';
+import type { Country } from '../models/country';
 import type { Journey } from '../models/journey';
 import type { JourneyRequest } from '../models/journey-request';
 import type { PagedResponse } from '../models/paged-response';
@@ -10,6 +11,11 @@ import type { PagedResponse } from '../models/paged-response';
 export class JourneyService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = '/api/journeys';
+  private readonly countriesBaseUrl = '/api/countries';
+
+  getCountries(): Observable<ApiResponse<Country[]>> {
+    return this.http.get<ApiResponse<Country[]>>(this.countriesBaseUrl);
+  }
 
   getJourneys(page = 0, size = 5): Observable<ApiResponse<PagedResponse<Journey>>> {
     return this.http.get<ApiResponse<PagedResponse<Journey>>>(this.baseUrl, {
