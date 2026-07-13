@@ -15,7 +15,7 @@
   </td>
   <td class="col-date">{{ journey().startDate | date:'dd.MM.yyyy' }}</td>
   <td class="col-date">{{ journey().endDate | date:'dd.MM.yyyy' }}</td>
-  <td class="col-currency">{{ journey().currency.code }}</td>
+  <td class="col-currency">{{ journey().currency?.code }}</td>
   <td class="col-amount">{{ journey().amount | number:'1.0-0' }}</td>
   <td class="col-status"><app-journey-status-badge [status]="journey().status" /></td>
   <td class="col-actions">

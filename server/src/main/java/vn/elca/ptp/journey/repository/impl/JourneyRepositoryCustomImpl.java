@@ -1,4 +1,4 @@
-package vn.elca.ptp.journey.repository;
+package vn.elca.ptp.journey.repository.impl;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ import vn.elca.ptp.journey.domain.QJourney;
 import vn.elca.ptp.journey.dto.JourneyDTO;
 import vn.elca.ptp.journey.dto.JourneyFilter;
 import vn.elca.ptp.journey.mapper.JourneyMapper;
+import vn.elca.ptp.journey.repository.JourneyRepositoryCustom;
 
 @Repository
 @RequiredArgsConstructor
@@ -39,6 +40,9 @@ public class JourneyRepositoryCustomImpl implements JourneyRepositoryCustom {
 
         List<Journey> content = queryFactory
                 .selectFrom(journey)
+                .leftJoin(journey.country).fetchJoin()
+                .leftJoin(journey.place).fetchJoin()
+                .leftJoin(journey.currency).fetchJoin()
                 .where(predicate)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
