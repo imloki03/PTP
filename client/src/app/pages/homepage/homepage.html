@@ -35,8 +35,7 @@
 <!-- Main Card -->
 <main class="journey-card">
   <app-journey-search-panel
-    [currencies]="currencies"
-    (onSearch)="onSearch()"
+    (onSearch)="onSearch($event)"
     (onReset)="onReset()"
   />
   <div class="card-divider"></div>

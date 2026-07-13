@@ -26,6 +26,7 @@ import vn.elca.ptp.common.dto.ApiResponse;
 import vn.elca.ptp.common.dto.PagedResponse;
 import vn.elca.ptp.common.util.MessageBundleUtils;
 import vn.elca.ptp.journey.dto.JourneyDTO;
+import vn.elca.ptp.journey.dto.JourneyFilter;
 import vn.elca.ptp.journey.dto.JourneyRequest;
 import vn.elca.ptp.journey.service.JourneyService;
 
@@ -36,6 +37,7 @@ public class JourneyController {
     private final JourneyService journeyService;
     private final MessageBundleUtils messageBundleUtils;
 
+    //add swagger
     @PostMapping
     public ResponseEntity<?> createJourney(@Valid @RequestBody JourneyRequest request) {
         JourneyDTO journey = journeyService.createJourney(request);
@@ -50,9 +52,9 @@ public class JourneyController {
         return ResponseEntity.ok(ApiResponse.success(model));
     }
 
-    @GetMapping
-    public ResponseEntity<?> getJourneys(@PageableDefault(size = 5) Pageable pageable) {
-        Page<JourneyDTO> page = journeyService.getJourneys(pageable);
+    @PostMapping("/search")
+    public ResponseEntity<?> getJourneys(@PageableDefault(size = 5) Pageable pageable, @RequestBody JourneyFilter filter) {
+        Page<JourneyDTO> page = journeyService.searchJourneys(pageable, filter);
         PagedResponse<JourneyDTO> response = PagedResponse.from(page);
         return ResponseEntity.ok(ApiResponse.success(response));
     }

@@ -5,7 +5,7 @@
       <br>
       <div class="field-wrapper">
         <mat-icon class="search-icon">search</mat-icon>
-        <input class="filter-input" [placeholder]="'filter.searchPlaceholder' | translate" [(ngModel)]="searchQuery" (keyup.enter)="onSearch.emit()" />
+        <input class="filter-input" [placeholder]="'filter.searchPlaceholder' | translate" [(ngModel)]="searchQuery" (keyup.enter)="search()" />
       </div>
     </div>
     <div class="cell">
@@ -91,8 +91,8 @@
       </div>
     </div>
     <div class="cell actions-cell">
-      <app-button variant="primary" (onClick)="onSearch.emit()">{{ 'filter.search' | translate }}</app-button>
-      <app-button variant="outline" (onClick)="reset(); onReset.emit()">{{ 'filter.reset' | translate }}</app-button>
+      <app-button variant="primary" (onClick)="search()">{{ 'filter.search' | translate }}</app-button>
+      <app-button variant="outline" (onClick)="reset()">{{ 'filter.reset' | translate }}</app-button>
     </div>
   </div>
 </div>

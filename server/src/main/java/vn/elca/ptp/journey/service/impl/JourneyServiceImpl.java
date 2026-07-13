@@ -17,6 +17,7 @@ import vn.elca.ptp.common.util.MessageBundleUtils;
 import vn.elca.ptp.journey.domain.Journey;
 import vn.elca.ptp.journey.domain.Place;
 import vn.elca.ptp.journey.dto.JourneyDTO;
+import vn.elca.ptp.journey.dto.JourneyFilter;
 import vn.elca.ptp.journey.dto.JourneyRequest;
 import vn.elca.ptp.journey.exception.PlaceNotInCountryException;
 import vn.elca.ptp.journey.mapper.JourneyMapper;
@@ -46,9 +47,8 @@ public class JourneyServiceImpl implements JourneyService {
     }
 
     @Override
-    public Page<JourneyDTO> getJourneys(Pageable pageable) {
-        return journeyRepository.findAll(pageable)
-                .map(journeyMapper::toDto);
+    public Page<JourneyDTO> searchJourneys(Pageable pageable, JourneyFilter filter) {
+        return journeyRepository.searchJourneys(pageable, filter);
     }
 
     @Override

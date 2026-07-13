@@ -6,7 +6,7 @@ import {JourneySearchPanel} from '../../components/journey-search-panel/journey-
 import {JourneyTable} from '../../components/journey-table/journey-table';
 import type {PageEvent} from '@angular/material/paginator';
 import type {Journey} from '../../models/journey';
-import type {Currency} from '../../models/currency';
+import type {JourneyFilter} from '../../models/journey-filter';
 import {JourneyService} from '../../services/journey';
 
 @Component({
@@ -26,12 +26,12 @@ export class Homepage implements OnInit {
     this.translate.use(lang);
   }
 
-  currencies: Currency[] = [];
   journeys: Journey[] = [];
   totalElements = 0;
   pageSize = 5;
   page = 0;
   selectedIds: number[] = [];
+  filter: JourneyFilter = {};
 
   ngOnInit() {
     this.loadJourneys();
@@ -42,7 +42,7 @@ export class Homepage implements OnInit {
   }
 
   loadJourneys() {
-    this.journeyService.getJourneys(this.page, this.pageSize).subscribe((res) => {
+    this.journeyService.getJourneys(this.page, this.pageSize, this.filter).subscribe((res) => {
       if (!res.data) { return; }
       this.journeys = res.data.content;
       this.totalElements = res.data.totalElements;
@@ -60,12 +60,14 @@ export class Homepage implements OnInit {
     // TODO: navigate to create page
   }
 
-  onSearch() {
+  onSearch(filter: JourneyFilter) {
+    this.filter = filter;
     this.page = 0;
     this.loadJourneys();
   }
 
   onReset() {
+    this.filter = {};
     this.page = 0;
     this.loadJourneys();
   }

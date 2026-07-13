@@ -7,6 +7,7 @@ import {CountryService} from '../../services/country';
 import {CurrencyService} from '../../services/currency';
 import type {Country} from '../../models/country';
 import type {Currency} from '../../models/currency';
+import type {JourneyFilter} from '../../models/journey-filter';
 import {JOURNEY_STATUS_VALUES} from '../../models/journey-status';
 
 @Component({
@@ -22,7 +23,7 @@ export class JourneySearchPanel implements OnInit {
 
   countries: Country[] = [];
   currencies: Currency[] = [];
-  readonly onSearch = output<void>();
+  readonly onSearch = output<JourneyFilter>();
   readonly onReset = output<void>();
 
   searchQuery = '';
@@ -62,6 +63,21 @@ export class JourneySearchPanel implements OnInit {
     return JOURNEY_STATUS_VALUES.map((s) => ({ value: s, label: this.translate.instant('status.' + s) }));
   }
 
+  search() {
+    const filter: JourneyFilter = {};
+    if (this.searchQuery) { filter.searchQuery = this.searchQuery; }
+    if (this.selectedCountry) { filter.countryId = Number(this.selectedCountry); }
+    if (this.selectedCurrency) { filter.currencyId = Number(this.selectedCurrency); }
+    if (this.selectedStatus) { filter.status = String(this.selectedStatus); }
+    if (this.amountFrom) { filter.amountFrom = Number(this.amountFrom); }
+    if (this.amountTo) { filter.amountTo = Number(this.amountTo); }
+    if (this.startDate) { filter.startDateFrom = this.startDate; }
+    if (this.startDateTo) { filter.startDateTo = this.startDateTo; }
+    if (this.endDate) { filter.endDateFrom = this.endDate; }
+    if (this.endDateTo) { filter.endDateTo = this.endDateTo; }
+    this.onSearch.emit(filter);
+  }
+
   reset() {
     this.searchQuery = '';
     this.selectedCountry = '';
@@ -73,5 +89,6 @@ export class JourneySearchPanel implements OnInit {
     this.startDateTo = '';
     this.endDate = '';
     this.endDateTo = '';
+    this.onReset.emit();
   }
 }
