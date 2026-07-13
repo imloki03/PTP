@@ -1,0 +1,52 @@
+{
+  "brand": {
+    "acronym": "PTP",
+    "subtitle": "Plan de Voyage Personnel"
+  },
+  "nav": {
+    "journey": "Voyage",
+    "company": "Société",
+    "customer": "Client"
+  },
+  "page": {
+    "title": "Voyages",
+    "breadcrumbHome": "Accueil",
+    "breadcrumbCurrent": "Voyages",
+    "newJourney": "Nouveau voyage"
+  },
+  "filter": {
+    "searchPlaceholder": "Rechercher par nom, description",
+    "status": "Statut",
+    "country": "Pays",
+    "currency": "Devise",
+    "amount": "Montant",
+    "from": "De",
+    "to": "À",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "search": "Rechercher",
+    "reset": "Réinitialiser"
+  },
+  "status": {
+    "PLANNING": "Planification",
+    "IN_PROGRESS": "En cours",
+    "FINISHED": "Terminé"
+  },
+  "table": {
+    "name": "Nom",
+    "description": "Description",
+    "startDate": "Date début",
+    "endDate": "Date fin",
+    "currency": "Devise",
+    "amount": "Montant",
+    "status": "Statut",
+    "empty": "Aucun voyage trouvé",
+    "deleteSelected": "Supprimer sélection ({{count}})",
+    "editTooltip": "Modifier {{name}}",
+    "deleteTooltip": "Supprimer {{name}}",
+    "countryLabel": "Vietnam"
+  },
+  "pagination": {
+    "showing": "Affichage de {{start}} à {{end}} sur {{total}} entrées"
+  }
+}

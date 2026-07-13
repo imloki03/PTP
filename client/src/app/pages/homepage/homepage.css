@@ -1,0 +1,121 @@
+:host {
+  display: block;
+  background: #f3f4f8;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+/* ── Top Navigation Bar ── */
+.topbar {
+  height: 3.5rem;
+  background: #3496f3;
+  display: flex;
+  align-items: center;
+}
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  gap: 2rem;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.brand-acronym {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+.brand-subtitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 2rem;
+}
+.nav-link {
+  padding: 10px 20px;
+  border-radius: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  width: 4rem;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.nav-link:hover { background: rgba(255, 255, 255, 0.12); }
+.nav-link.active {
+  background: #fff;
+  color: #202438;
+}
+
+.language-switch {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.lang-option {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.lang-option.active { color: #fff; }
+.lang-sep { color: rgba(255, 255, 255, 0.5); font-weight: 300; font-size: 14px; }
+
+/* ── Page Heading ── */
+.page-heading {
+  margin: 0 auto;
+  padding: 32px 34px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.heading-left { display: flex; flex-direction: column; gap: 4px; }
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #202438;
+  margin: 0;
+}
+
+.breadcrumb ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 6px;
+  font-size: 14px;
+  color: #9ba1b6;
+}
+.breadcrumb li + li::before { content: "/"; margin-right: 6px; color: #9ba1b6; }
+.breadcrumb a { color: #9ba1b6; text-decoration: none; }
+.breadcrumb a:hover { color: #079cf1; }
+.breadcrumb span[aria-current="page"] { color: #9ba1b6; font-weight: 500; }
+
+/* ── Main Card ── */
+.journey-card {
+  max-width: 100%;
+  margin: 0 2rem;
+  background: #fff;
+  border-radius: 12px 12px 0 0;
+  padding: 2rem 3rem 1.5rem;
+}
+.card-divider {
+  height: 1px;
+  background: #e2e6ef;
+  margin: 1.5rem 0;
+}

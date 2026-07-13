@@ -1,0 +1,30 @@
+.filter-form { display: flex; flex-direction: column; gap: 20px; }
+
+.grid-row { display: grid; gap: 16px; }
+.row-1 { grid-template-columns: repeat(5, 1fr); }
+.row-2 { grid-template-columns: repeat(5, 1fr); }
+.row-3 { grid-template-columns: repeat(5, 1fr); }
+
+.cell { display: flex; flex-direction: column; gap: 4px; }
+.col-span-3 { grid-column: span 3; }
+
+.field-label { font-size: 13px; font-weight: 600; color: #202438; }
+
+.field-wrapper { position: relative; display: flex; align-items: center; }
+.filter-input {
+  height: 42px; padding: 0 14px; border: none; border-radius: 6px;
+  background: #f4f7fa; font-size: 14px; color: #202438; outline: none;
+  width: 100%; box-sizing: border-box; font-family: inherit;
+}
+.filter-input::placeholder { color: #9ba1b6; }
+.filter-input:focus { box-shadow: 0 0 0 2px #079cf1; }
+
+select.filter-input { appearance: none; cursor: pointer; padding-right: 36px; }
+.chevron { position: absolute; right: 10px; color: #9ba1b6; font-size: 20px; pointer-events: none; }
+.search-icon { position: absolute; left: 12px; color: #9ba1b6; font-size: 20px; z-index: 1; }
+.cell:has(.search-icon) .filter-input { padding-left: 40px; }
+
+input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.5; cursor: pointer; }
+
+.actions-cell { justify-content: flex-end; flex-direction: row !important; align-items: flex-end; gap: 8px; }
+.actions-cell app-button { height: 42px; }

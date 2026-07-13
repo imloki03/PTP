@@ -1,0 +1,27 @@
+<tr [ngClass]="even() ? 'row-even' : 'row-odd'">
+  <td class="col-check"><app-checkbox [checked]="selected()" (checkedChange)="toggle.emit()" /></td>
+  <td class="col-name">{{ journey().name }}</td>
+  <td class="col-desc truncate" [matTooltip]="journey().description">{{ journey().description }}</td>
+  <td class="col-country">
+    <div class="country-cell">
+      <span class="flag-icon">
+        <svg viewBox="0 0 30 20" width="20" height="14">
+          <rect width="30" height="20" fill="#da251d"/>
+          <polygon points="15,4 11,8 15,16 19,8" fill="#ff0"/>
+        </svg>
+      </span>
+      <span>{{ 'table.countryLabel' | translate }}</span>
+    </div>
+  </td>
+  <td class="col-date">{{ journey().startDate | date:'dd.MM.yyyy' }}</td>
+  <td class="col-date">{{ journey().endDate | date:'dd.MM.yyyy' }}</td>
+  <td class="col-currency">{{ journey().currency.code }}</td>
+  <td class="col-amount">{{ journey().amount | number:'1.0-0' }}</td>
+  <td class="col-status"><app-journey-status-badge [status]="journey().status" /></td>
+  <td class="col-actions">
+    <div class="actions-cell">
+      <app-icon-button icon="edit" [tooltip]="'table.editTooltip' | translate:{ name: journey().name }" variant="outline" (onClick)="edit.emit()" />
+      <app-icon-button icon="delete" [tooltip]="'table.deleteTooltip' | translate:{ name: journey().name }" variant="outline" (onClick)="delete.emit()" />
+    </div>
+  </td>
+</tr>

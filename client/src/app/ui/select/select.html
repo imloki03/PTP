@@ -1,0 +1,10 @@
+<mat-form-field [style.width]="'100%'" appearance="outline">
+  @if (label()) {
+    <mat-label>{{ label() }}</mat-label>
+  }
+  <mat-select [(value)]="selected" [placeholder]="placeholder()">
+    @for (opt of options(); track opt.value) {
+      <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>

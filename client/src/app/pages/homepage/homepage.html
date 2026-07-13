@@ -1,0 +1,58 @@
+<!-- Top Navigation -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-acronym">{{ 'brand.acronym' | translate }}</span>
+      <span class="brand-subtitle">Personal Travel Plan</span>
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link active" aria-current="page">{{ 'nav.journey' | translate }}</a>
+      <a class="nav-link">{{ 'nav.company' | translate }}</a>
+      <a class="nav-link">{{ 'nav.customer' | translate }}</a>
+    </nav>
+    <div class="language-switch">
+      <span class="lang-option" [class.active]="translate.currentLang() === 'en'" (click)="switchLang('en')">EN</span>
+      <span class="lang-sep">|</span>
+      <span class="lang-option" [class.active]="translate.currentLang() === 'fr'" (click)="switchLang('fr')">FR</span>
+    </div>
+  </div>
+</header>
+
+<!-- Page Heading -->
+<section class="page-heading">
+  <div class="heading-left">
+    <h1 class="page-title">{{ 'page.title' | translate }}</h1>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a routerLink="/">{{ 'page.breadcrumbHome' | translate }}</a></li>
+        <li><span aria-current="page">{{ 'page.breadcrumbCurrent' | translate }}</span></li>
+      </ol>
+    </nav>
+  </div>
+  <app-button variant="mint" (onClick)="onNewJourney()">{{ 'page.newJourney' | translate }}</app-button>
+</section>
+
+<!-- Main Card -->
+<main class="journey-card">
+  <app-journey-search-panel
+    [countries]="countries"
+    [currencies]="currencies"
+    (onSearch)="onSearch()"
+    (onReset)="onReset()"
+  />
+  <div class="card-divider"></div>
+  <app-journey-table
+    [journeys]="journeys"
+    [totalElements]="totalElements"
+    [pageSize]="pageSize"
+    [pageIndex]="page"
+    [selectedIds]="selectedIds"
+    [allSelected]="allSelected"
+    (toggleAll)="onToggleAll()"
+    (toggleRow)="onToggleRow($event)"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
+    (deleteSelected)="onDeleteSelected()"
+    (onPageChange)="onPageChange($event)"
+  />
+</main>

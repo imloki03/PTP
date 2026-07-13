@@ -1,0 +1,48 @@
+<table class="journey-table">
+  <thead>
+    <tr>
+      <th class="col-check">
+        <app-checkbox [checked]="allSelected()" (checkedChange)="toggleAll.emit()" />
+      </th>
+      <th class="col-name">{{ 'table.name' | translate }}</th>
+      <th class="col-desc">{{ 'table.description' | translate }}</th>
+      <th class="col-country"></th>
+      <th class="col-date">{{ 'table.startDate' | translate }}</th>
+      <th class="col-date">{{ 'table.endDate' | translate }}</th>
+      <th class="col-currency">{{ 'table.currency' | translate }}</th>
+      <th class="col-amount">{{ 'table.amount' | translate }}</th>
+      <th class="col-status">{{ 'table.status' | translate }}</th>
+      <th class="col-actions"></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (journey of journeys(); track journey.id) {
+      <tr app-journey-row
+        [journey]="journey"
+        [selected]="selectedIds().includes(journey.id)"
+        [even]="$even"
+        (toggle)="toggleRow.emit(journey.id)"
+        (edit)="edit.emit(journey.id)"
+        (delete)="delete.emit(journey.id)"
+      ></tr>
+    } @empty {
+      <tr>
+        <td colspan="10" class="empty-state">{{ 'table.empty' | translate }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<div class="table-footer">
+  @if (selectedIds().length > 0) {
+    <app-button variant="danger" (onClick)="deleteSelected.emit()">
+      {{ 'table.deleteSelected' | translate: { count: selectedIds().length } }}
+    </app-button>
+  }
+  <app-pagination
+    [totalElements]="totalElements()"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageIndex()"
+    (onPageChange)="onPageChange.emit($event)"
+  />
+</div>

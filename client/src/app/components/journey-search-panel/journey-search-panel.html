@@ -1,0 +1,98 @@
+<div class="filter-form">
+  <!-- Row 1 -->
+  <div class="grid-row row-1">
+    <div class="cell col-span-3">
+      <br>
+      <div class="field-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input class="filter-input" [placeholder]="'filter.searchPlaceholder' | translate" [(ngModel)]="searchQuery" (keyup.enter)="onSearch.emit()" />
+      </div>
+    </div>
+    <div class="cell">
+      <span class="field-label">{{ 'filter.status' | translate }}</span>
+      <div class="field-wrapper">
+        <select class="filter-input" [(ngModel)]="selectedStatus">
+          <option value=""></option>
+          @for (opt of statusOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+        <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
+      </div>
+    </div>
+    <div class="cell"></div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="grid-row row-2">
+    <div class="cell">
+      <span class="field-label">{{ 'filter.country' | translate }}</span>
+      <div class="field-wrapper">
+        <select class="filter-input" [(ngModel)]="selectedCountry">
+          <option value=""></option>
+          @for (opt of countryOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+        <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
+      </div>
+    </div>
+    <div class="cell">
+      <span class="field-label">{{ 'filter.currency' | translate }}</span>
+      <div class="field-wrapper">
+        <select class="filter-input" [(ngModel)]="selectedCurrency">
+          <option value=""></option>
+          @for (opt of currencyOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+        <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
+      </div>
+    </div>
+    <div class="cell">
+      <span class="field-label">{{ 'filter.amount' | translate }}</span>
+      <div class="field-wrapper">
+        <input class="filter-input" type="number" [placeholder]="'filter.from' | translate" [(ngModel)]="amountFrom" />
+      </div>
+    </div>
+    <div class="cell">
+      <span class="field-label">&nbsp;</span>
+      <div class="field-wrapper">
+        <input class="filter-input" type="number" [placeholder]="'filter.to' | translate" [(ngModel)]="amountTo" />
+      </div>
+    </div>
+    <div class="cell"></div>
+  </div>
+
+  <!-- Row 3 -->
+  <div class="grid-row row-3">
+    <div class="cell">
+      <span class="field-label">{{ 'filter.startDate' | translate }}</span>
+      <div class="field-wrapper">
+        <input class="filter-input" type="date" [(ngModel)]="startDate" />
+      </div>
+    </div>
+    <div class="cell">
+      <span class="field-label">&nbsp;</span>
+      <div class="field-wrapper">
+        <input class="filter-input" type="date" [(ngModel)]="startDateTo" />
+      </div>
+    </div>
+    <div class="cell">
+      <span class="field-label">{{ 'filter.endDate' | translate }}</span>
+      <div class="field-wrapper">
+        <input class="filter-input" type="date" [(ngModel)]="endDate" />
+      </div>
+    </div>
+    <div class="cell">
+      <span class="field-label">&nbsp;</span>
+      <div class="field-wrapper">
+        <input class="filter-input" type="date" [(ngModel)]="endDateTo" />
+      </div>
+    </div>
+    <div class="cell actions-cell">
+      <app-button variant="primary" (onClick)="onSearch.emit()">{{ 'filter.search' | translate }}</app-button>
+      <app-button variant="outline" (onClick)="reset(); onReset.emit()">{{ 'filter.reset' | translate }}</app-button>
+    </div>
+  </div>
+</div>
