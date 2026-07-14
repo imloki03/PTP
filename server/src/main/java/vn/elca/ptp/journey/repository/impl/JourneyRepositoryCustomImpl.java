@@ -15,6 +15,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import vn.elca.ptp.journey.domain.Journey;
 import vn.elca.ptp.journey.domain.QJourney;
+import vn.elca.ptp.journey.domain.enums.JourneyStatus;
 import vn.elca.ptp.journey.dto.JourneyDTO;
 import vn.elca.ptp.journey.dto.JourneyFilter;
 import vn.elca.ptp.journey.mapper.JourneyMapper;
@@ -58,6 +59,8 @@ public class JourneyRepositoryCustomImpl implements JourneyRepositoryCustom {
 
     private BooleanBuilder buildPredicate(JourneyFilter filter, QJourney journey) {
         BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(journey.status.ne(JourneyStatus.DELETED));
 
         if (StringUtils.isNotBlank(filter.searchQuery())) {
             String pattern = "%" + filter.searchQuery().trim().toLowerCase() + "%";

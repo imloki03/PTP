@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import vn.elca.ptp.common.util.MessageBundleUtils;
 import vn.elca.ptp.journey.domain.Journey;
 import vn.elca.ptp.journey.domain.Place;
+import vn.elca.ptp.journey.domain.enums.JourneyStatus;
 import vn.elca.ptp.journey.dto.JourneyDTO;
 import vn.elca.ptp.journey.dto.JourneyFilter;
 import vn.elca.ptp.journey.dto.JourneyRequest;
@@ -72,11 +73,11 @@ public class JourneyServiceImpl implements JourneyService {
 
     @Override
     public void deleteJourney(Long journeyId) {
-        if (!journeyRepository.existsById(journeyId)) {
-            throw new EntityNotFoundException(
-                    messageBundleUtils.getMessage(JOURNEY_NOT_FOUND, journeyId));
-        }
-        journeyRepository.deleteById(journeyId);
+        Journey journey = journeyRepository.findById(journeyId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        messageBundleUtils.getMessage(JOURNEY_NOT_FOUND, journeyId)));
+        journey.setStatus(JourneyStatus.DELETED);
+        journeyRepository.save(journey);
     }
 
     //TODO: add a batch soft delete method
