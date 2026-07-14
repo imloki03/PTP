@@ -2,5 +2,9 @@
   @if (label()) {
     <mat-label>{{ label() }}</mat-label>
   }
-  <input matInput [type]="type()" [placeholder]="placeholder()" [(ngModel)]="value" />
+  @if (multiline()) {
+    <textarea matInput [placeholder]="placeholder()" [(ngModel)]="value" rows="3"></textarea>
+  } @else {
+    <input matInput [type]="type()" [placeholder]="placeholder()" [(ngModel)]="value" />
+  }
 </mat-form-field>

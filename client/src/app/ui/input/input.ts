@@ -12,4 +12,5 @@ export class Input {
   readonly placeholder = input('');
   readonly type = input('text');
   readonly value = model<string | number>('');
+  readonly multiline = input(false);
 }

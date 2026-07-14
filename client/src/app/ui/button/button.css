@@ -1,4 +1,5 @@
 :host-context(.btn-mint) .mdc-button { background-color: #1fc59b !important; color: #fff !important; }
+:host-context(.btn-success) .mdc-button { background-color: #1EC79C !important; color: #fff !important; }
 :host-context(.btn-danger) .mdc-button { background-color: #ff345b !important; color: #fff !important; }
 :host-context(.btn-outline) .mdc-button { background-color: transparent !important; color: #9ba1b6 !important; border: 2px solid #079cf1 !important; }
 

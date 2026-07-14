@@ -1,0 +1,269 @@
+:host {
+  display: block;
+  background: #f3f4f8;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+.topbar {
+  height: 3.5rem;
+  background: #3496f3;
+  display: flex;
+  align-items: center;
+}
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  gap: 2rem;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.brand-acronym {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+.brand-subtitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 2rem;
+}
+.nav-link {
+  padding: 10px 20px;
+  border-radius: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  width: 4rem;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.nav-link:hover { background: rgba(255, 255, 255, 0.12); }
+.nav-link.active {
+  background: #fff;
+  color: #202438;
+}
+
+.language-switch {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.lang-option {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.lang-option.active { color: #fff; }
+.lang-sep { color: rgba(255, 255, 255, 0.5); font-weight: 300; font-size: 14px; }
+
+.page-context {
+  padding: 32px 34px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.context-left { display: flex; flex-direction: column; gap: 4px; }
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #202438;
+  margin: 0;
+}
+
+.breadcrumb ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 6px;
+  font-size: 14px;
+  color: #9ba1b6;
+}
+.breadcrumb li + li::before { content: "/"; margin-right: 6px; color: #9ba1b6; }
+.breadcrumb a { color: #9ba1b6; text-decoration: none; }
+.breadcrumb a:hover { color: #079cf1; }
+.breadcrumb span[aria-current="page"] { color: #9ba1b6; font-weight: 500; }
+
+/* ── Card ── */
+
+.journey-card {
+  margin: 0 2rem 20px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem 3rem 1.5rem;
+}
+
+.card-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #202438;
+  margin: 0;
+}
+
+.card-divider {
+  height: 1px;
+  background: #e2e6ef;
+  margin: 1.5rem 0;
+}
+
+/* ── Unified form grid ──
+   5 columns so full-width controls span left-control + gap + right-label + right-control
+   for perfect alignment with paired fields */
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 36px 100px 1fr;
+  column-gap: 16px;
+  align-items: center;
+}
+
+/* Full-width column classes */
+.col-lbl { grid-column: 1; }
+.col-ctl { grid-column: 2 / -1; }
+.col-lbl-top { align-self: start; }
+
+/* Paired column classes */
+.col-lctl { grid-column: 2; }
+.col-rlbl { grid-column: 4; }
+.col-rctl { grid-column: 5; }
+
+.form-label,
+.col-lbl,
+.col-rlbl {
+  font-size: 14px;
+  font-weight: 500;
+  color: #202438;
+  white-space: nowrap;
+}
+
+/* ── Inputs (matches journey-search-panel) ── */
+
+.filter-input {
+  height: 42px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 6px;
+  background: #f4f7fa;
+  font-size: 14px;
+  color: #202438;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+.filter-input::placeholder { color: #9ba1b6; }
+.filter-input:focus { box-shadow: 0 0 0 2px #079cf1; }
+
+textarea.filter-input {
+  height: auto;
+  padding: 12px 14px;
+  resize: vertical;
+  min-height: 80px;
+}
+
+select.filter-input {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 36px;
+}
+
+input[type="date"].filter-input::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+input[type="number"].filter-input::-webkit-outer-spin-button,
+input[type="number"].filter-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"].filter-input {
+  -moz-appearance: textfield;
+}
+
+.field-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.chevron {
+  position: absolute;
+  right: 10px;
+  color: #9ba1b6;
+  font-size: 20px;
+  pointer-events: none;
+}
+
+/* ── Duration ── */
+
+.duration-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.duration-box {
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.duration-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #202438;
+  white-space: nowrap;
+}
+
+/* ── Footer ── */
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 24px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: none;
+  color: #b5b8c6;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 6px;
+  transition: color 0.2s;
+  font-family: inherit;
+}
+.btn-ghost:hover {
+  color: #8a8fa3;
+}

@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatOption } from '@angular/material/core';
@@ -14,4 +14,5 @@ export class Select {
   readonly placeholder = input('');
   readonly options = input<{ value: string | number; label: string }[]>([]);
   readonly selected = model<string | number>('');
+  readonly selectionChange = output<string | number>();
 }

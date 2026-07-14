@@ -54,5 +54,29 @@
   },
   "pagination": {
     "showing": "Showing {{start}} to {{end}} of {{total}} entries"
+  },
+  "journeyForm": {
+    "cardTitleCreate": "New journey info",
+    "cardTitleEdit": "Edit journey info",
+    "breadcrumbNew": "New",
+    "breadcrumbEdit": "Edit",
+    "labelName": "Name",
+    "labelDescription": "Description",
+    "labelCountry": "Country",
+    "labelPlace": "Place",
+    "labelStartDate": "Start date",
+    "labelEndDate": "End date",
+    "labelCurrency": "Currency",
+    "labelAmount": "Amount",
+    "labelDuration": "Duration",
+    "labelStatus": "Status",
+    "day": "day (s)",
+    "night": "night (s)",
+    "save": "Save",
+    "discard": "Discard",
+    "newJourney": "New journey",
+    "selectCountry": "Select a country",
+    "selectPlace": "Select a place",
+    "selectCurrency": "Select a currency"
   }
 }

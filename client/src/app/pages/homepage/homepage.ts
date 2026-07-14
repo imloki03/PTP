@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Button} from '../../ui/button/button';
@@ -21,6 +21,7 @@ import {JourneyService} from '../../services/journey';
   styleUrls: ['./homepage.css'],
 })
 export class Homepage implements OnInit {
+  private readonly router = inject(Router);
   private readonly journeyService = inject(JourneyService);
   private readonly dialog = inject(MatDialog);
   protected readonly translate = inject(TranslateService);
@@ -60,7 +61,7 @@ export class Homepage implements OnInit {
   }
 
   onNewJourney() {
-    // TODO: navigate to create page
+    this.router.navigate(['/journeys/new']);
   }
 
   onSearch(filter: JourneyFilter) {
@@ -95,7 +96,7 @@ export class Homepage implements OnInit {
   }
 
   onEdit(id: number) {
-    // TODO: navigate to edit page
+    this.router.navigate(['/journeys', id, 'edit']);
   }
 
   onDelete(id: number) {

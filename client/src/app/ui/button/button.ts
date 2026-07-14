@@ -10,7 +10,7 @@ import {MatButton} from '@angular/material/button';
 })
 export class Button {
   readonly disabled = input(false);
-  readonly variant = input<'primary' | 'mint' | 'danger' | 'outline'>('primary');
+  readonly variant = input<'primary' | 'mint' | 'danger' | 'outline' | 'success'>('primary');
   readonly width = input<string>();
   readonly height = input<string>();
   readonly state = input<'default' | 'loading' | 'success' | 'error'>('default');

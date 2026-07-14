@@ -1,0 +1,135 @@
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-acronym">{{ 'brand.acronym' | translate }}</span>
+      <span class="brand-subtitle">Personal Travel Plan</span>
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link active" aria-current="page">{{ 'nav.journey' | translate }}</a>
+      <a class="nav-link">{{ 'nav.company' | translate }}</a>
+      <a class="nav-link">{{ 'nav.customer' | translate }}</a>
+    </nav>
+    <div class="language-switch">
+      <span class="lang-option" [class.active]="translate.currentLang() === 'en'" (click)="switchLang('en')">EN</span>
+      <span class="lang-sep">|</span>
+      <span class="lang-option" [class.active]="translate.currentLang() === 'fr'" (click)="switchLang('fr')">FR</span>
+    </div>
+  </div>
+</header>
+
+<section class="page-context">
+  <div class="context-left">
+    <h1 class="page-title">{{ 'page.title' | translate }}</h1>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a routerLink="/">{{ 'page.breadcrumbHome' | translate }}</a></li>
+        <li><a routerLink="/journeys">{{ 'page.breadcrumbCurrent' | translate }}</a></li>
+        @if (mode === 'create') {
+          <li><span aria-current="page">{{ 'journeyForm.breadcrumbNew' | translate }}</span></li>
+        } @else {
+          <li><span aria-current="page">{{ 'journeyForm.breadcrumbEdit' | translate }}</span></li>
+        }
+      </ol>
+    </nav>
+  </div>
+  @if (mode === 'edit') {
+    <app-button variant="success" (onClick)="onNewJourney()">{{ 'journeyForm.newJourney' | translate }}</app-button>
+  }
+</section>
+
+<main class="journey-card">
+  <h2 class="card-heading">
+    @if (mode === 'create') {
+      {{ 'journeyForm.cardTitleCreate' | translate }}
+    } @else {
+      {{ 'journeyForm.cardTitleEdit' | translate }}
+    }
+  </h2>
+
+  <div class="card-divider"></div>
+
+  <div class="form-body">
+
+    <div class="form-row">
+      <label class="col-lbl">{{ 'journeyForm.labelName' | translate }}</label>
+      <input class="filter-input col-ctl" [value]="name()" (input)="name.set($any($event.target).value)" [placeholder]="('journeyForm.labelName' | translate)" />
+    </div>
+
+    <div class="form-row">
+      <label class="col-lbl col-lbl-top">{{ 'journeyForm.labelDescription' | translate }}</label>
+      <textarea class="filter-input col-ctl" [value]="description()" (input)="description.set($any($event.target).value)" [placeholder]="('journeyForm.labelDescription' | translate)" rows="4"></textarea>
+    </div>
+
+    <div class="form-row">
+      <label class="col-lbl">{{ 'journeyForm.labelCountry' | translate }}</label>
+      <div class="field-wrapper col-lctl">
+        <select class="filter-input" [value]="countryId()" (change)="onCountryChange($event)">
+          <option value=""></option>
+          @for (c of countryOptions; track c.id) {
+            <option [value]="c.id">{{ c.name }}</option>
+          }
+        </select>
+        <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
+      </div>
+      <label class="col-rlbl">{{ 'journeyForm.labelPlace' | translate }}</label>
+      <div class="field-wrapper col-rctl">
+        <select class="filter-input" [value]="placeId()" (change)="placeId.set($any($event.target).value)">
+          <option value=""></option>
+          @for (p of placeOptions; track p.id) {
+            <option [value]="p.id">{{ p.name }}</option>
+          }
+        </select>
+        <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label class="col-lbl">{{ 'journeyForm.labelStartDate' | translate }}</label>
+      <input class="filter-input col-lctl" type="date" [value]="startDate()" (change)="startDate.set($any($event.target).value)" />
+      <label class="col-rlbl">{{ 'journeyForm.labelEndDate' | translate }}</label>
+      <input class="filter-input col-rctl" type="date" [value]="endDate()" (change)="endDate.set($any($event.target).value)" />
+    </div>
+
+    <div class="form-row">
+      <label class="col-lbl">{{ 'journeyForm.labelCurrency' | translate }}</label>
+      <div class="field-wrapper col-lctl">
+        <select class="filter-input" [value]="currencyId()" (change)="currencyId.set($any($event.target).value)">
+          <option value=""></option>
+          @for (c of currencyOptions; track c.id) {
+            <option [value]="c.id">{{ c.code }} - {{ c.name }}</option>
+          }
+        </select>
+        <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
+      </div>
+      <label class="col-rlbl">{{ 'journeyForm.labelAmount' | translate }}</label>
+      <input class="filter-input col-rctl" type="number" [value]="amount()" (input)="amount.set($any($event.target).value)" [placeholder]="('journeyForm.labelAmount' | translate)" />
+    </div>
+
+    <div class="form-row">
+      <label class="col-lbl">{{ 'journeyForm.labelDuration' | translate }}</label>
+      <div class="duration-group col-lctl">
+        <input class="filter-input duration-box" type="number" [value]="durationDay()" (input)="durationDay.set($any($event.target).value)" aria-label="Days" />
+        <span class="duration-label">{{ 'journeyForm.day' | translate }}</span>
+        <input class="filter-input duration-box" type="number" [value]="durationNight()" (input)="durationNight.set($any($event.target).value)" aria-label="Nights" />
+        <span class="duration-label">{{ 'journeyForm.night' | translate }}</span>
+      </div>
+      <label class="col-rlbl">{{ 'journeyForm.labelStatus' | translate }}</label>
+      <div class="field-wrapper col-rctl">
+        <select class="filter-input" [value]="status()" (change)="status.set($any($event.target).value)">
+          @for (s of statusOptions; track s) {
+            <option [value]="s">{{ 'status.' + s | translate }}</option>
+          }
+        </select>
+        <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card-divider"></div>
+
+  <div class="form-footer">
+    <button class="btn-ghost" type="button" (click)="discard()">{{ 'journeyForm.discard' | translate }}</button>
+    <app-button [state]="saving() ? 'loading' : 'default'" (onClick)="save()">{{ 'journeyForm.save' | translate }}</app-button>
+  </div>
+</main>

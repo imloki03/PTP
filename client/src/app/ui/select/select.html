@@ -2,7 +2,7 @@
   @if (label()) {
     <mat-label>{{ label() }}</mat-label>
   }
-  <mat-select [(value)]="selected" [placeholder]="placeholder()">
+  <mat-select [(value)]="selected" [placeholder]="placeholder()" (valueChange)="selectionChange.emit($event)">
     @for (opt of options(); track opt.value) {
       <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
     }

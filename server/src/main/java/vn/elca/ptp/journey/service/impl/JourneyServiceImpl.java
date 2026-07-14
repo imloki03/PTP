@@ -79,7 +79,7 @@ public class JourneyServiceImpl implements JourneyService {
         journeyRepository.deleteById(journeyId);
     }
 
-    //TODO: add a batch delete method
+    //TODO: add a batch soft delete method
 
     private void resolveReferences(Journey journey, JourneyRequest request) {
         journey.setCountry(countryRepository.findById(request.countryId())

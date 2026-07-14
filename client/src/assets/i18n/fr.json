@@ -54,5 +54,29 @@
   },
   "pagination": {
     "showing": "Affichage de {{start}} à {{end}} sur {{total}} entrées"
+  },
+  "journeyForm": {
+    "cardTitleCreate": "Nouveau voyage",
+    "cardTitleEdit": "Modifier le voyage",
+    "breadcrumbNew": "Nouveau",
+    "breadcrumbEdit": "Modifier",
+    "labelName": "Nom",
+    "labelDescription": "Description",
+    "labelCountry": "Pays",
+    "labelPlace": "Lieu",
+    "labelStartDate": "Date de début",
+    "labelEndDate": "Date de fin",
+    "labelCurrency": "Devise",
+    "labelAmount": "Montant",
+    "labelDuration": "Durée",
+    "labelStatus": "Statut",
+    "day": "jour (s)",
+    "night": "nuit (s)",
+    "save": "Enregistrer",
+    "discard": "Annuler",
+    "newJourney": "Nouveau voyage",
+    "selectCountry": "Sélectionner un pays",
+    "selectPlace": "Sélectionner un lieu",
+    "selectCurrency": "Sélectionner une devise"
   }
 }
