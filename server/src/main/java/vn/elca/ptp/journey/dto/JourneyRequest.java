@@ -21,5 +21,6 @@ public record JourneyRequest(
         @Positive Long amount,
         @Positive Integer durationDay,
         @PositiveOrZero Integer durationNight,
-        @NotNull JourneyStatus status) {
+        @NotNull JourneyStatus status,
+        Integer version) {
 }

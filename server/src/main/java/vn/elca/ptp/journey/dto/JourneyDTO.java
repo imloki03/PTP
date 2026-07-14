@@ -25,4 +25,5 @@ public class JourneyDTO {
     private Integer durationDay;
     private Integer durationNight;
     private JourneyStatus status;
+    private Integer version;
 }

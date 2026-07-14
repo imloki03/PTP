@@ -12,4 +12,5 @@ export interface JourneyRequest {
   durationDay: number | null;
   durationNight: number | null;
   status: JourneyStatus;
+  version: number | null;
 }

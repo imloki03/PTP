@@ -84,7 +84,8 @@
     "newJourney": "Nouveau voyage",
     "selectCountry": "Sélectionner un pays",
     "selectPlace": "Sélectionner un lieu",
-    "selectCurrency": "Sélectionner une devise"
+    "selectCurrency": "Sélectionner une devise",
+    "optimisticLockError": "Ce voyage a été modifié par un autre utilisateur. Veuillez recharger et réessayer."
   },
   "validation": {
     "required": "{{field}} est obligatoire.",

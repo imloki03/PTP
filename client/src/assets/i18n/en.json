@@ -84,7 +84,8 @@
     "newJourney": "New journey",
     "selectCountry": "Select a country",
     "selectPlace": "Select a place",
-    "selectCurrency": "Select a currency"
+    "selectCurrency": "Select a currency",
+    "optimisticLockError": "This journey was modified by another user. Please reload and try again."
   },
   "validation": {
     "required": "{{field}} is required.",

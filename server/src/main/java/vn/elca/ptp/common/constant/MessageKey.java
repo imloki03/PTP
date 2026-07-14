@@ -10,6 +10,7 @@ public final class MessageKey {
     public static final String JOURNEY_RETRIEVED_LIST = "journey.retrieved.list";
     public static final String JOURNEY_UPDATED = "journey.updated";
     public static final String JOURNEY_DELETED = "journey.deleted";
+    public static final String JOURNEY_CONCURRENT_UPDATE = "journey.concurrentUpdate";
     public static final String PLACE_NOT_FOUND = "place.notfound";
     public static final String PLACE_NOT_IN_COUNTRY = "place.notInCountry";
     public static final String VALIDATION_FAILED = "validation.failed";

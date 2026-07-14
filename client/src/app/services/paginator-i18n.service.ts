@@ -8,7 +8,7 @@ export class PaginatorI18nService extends MatPaginatorIntl {
 
   constructor() {
     super();
-    this.translate.onLangChange.subscribe(() => this.updateLabels());
+    this.translate.onTranslationChange.subscribe(() => this.updateLabels());
     this.updateLabels();
   }
 

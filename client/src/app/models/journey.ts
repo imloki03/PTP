@@ -1,8 +1,8 @@
-import type { Country } from './country';
-import type { Currency } from './currency';
-import type { HateoasResource } from './hateoas-link';
-import type { Place } from './place';
-import type { JourneyStatus } from './journey-status';
+import type {Country} from './country';
+import type {Currency} from './currency';
+import type {HateoasResource} from './hateoas-link';
+import type {Place} from './place';
+import type {JourneyStatus} from './journey-status';
 
 export interface Journey extends HateoasResource {
   id: number;
@@ -17,4 +17,5 @@ export interface Journey extends HateoasResource {
   durationDay: number;
   durationNight: number;
   status: JourneyStatus;
+  version: number;
 }

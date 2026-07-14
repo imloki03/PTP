@@ -1,12 +1,11 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Button} from '../../ui/button/button';
 import {JourneyService} from '../../services/journey';
 import {CountryService} from '../../services/country';
 import {CurrencyService} from '../../services/currency';
-import {ActivatedRoute} from '@angular/router';
 import type {Country} from '../../models/country';
 import type {Currency} from '../../models/currency';
 import type {Place} from '../../models/place';
@@ -37,6 +36,7 @@ export class JourneyForm implements OnInit {
   currencies = signal<Currency[]>([]);
   allPlaces = signal<Place[]>([]);
 
+  version = signal<number | null>(null);
   name = signal('');
   description = signal('');
   countryId = signal<number | string>('');
@@ -100,6 +100,7 @@ export class JourneyForm implements OnInit {
     this.journeyService.getJourney(id).subscribe(res => {
       if (!res.data) { return; }
       const j = res.data;
+      this.version.set(j.version);
       this.name.set(j.name);
       this.description.set(j.description);
       this.countryId.set(j.country?.id ?? '');
@@ -256,6 +257,7 @@ export class JourneyForm implements OnInit {
     this.saving.set(true);
 
     const request: JourneyRequest = {
+      version: this.version(),
       name: this.name(),
       description: this.description(),
       countryId: this.countryId() ? +this.countryId() : 0,
