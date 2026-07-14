@@ -51,6 +51,26 @@ export class JourneyForm implements OnInit {
 
   saving = signal(false);
 
+  errors = signal<{
+    name?: string;
+    description?: string;
+    country?: string;
+    startDate?: string;
+    endDate?: string;
+    durationDay?: string;
+    durationNight?: string;
+    duration?: string;
+    status?: string;
+  }>({});
+
+  topError = signal(false);
+
+  protected clearError(field: string) {
+    this.errors.update(e => ({ ...e, [field]: undefined }));
+    const remaining = Object.values(this.errors()).some(v => v !== undefined);
+    if (!remaining) { this.topError.set(false); }
+  }
+
   ngOnInit() {
     const idParam = this.route.snapshot.params['id'];
     if (idParam) {
@@ -98,6 +118,7 @@ export class JourneyForm implements OnInit {
   onCountryChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
     this.countryId.set(value);
+    this.clearError('country');
     this.updatePlacesForCountry();
   }
 
@@ -111,6 +132,37 @@ export class JourneyForm implements OnInit {
     const numericId = typeof id === 'string' ? +id : id;
     const country = this.countries().find(c => c.id === numericId);
     this.allPlaces.set(country?.places ?? []);
+  }
+
+  onStartDateChange(value: string) {
+    this.startDate.set(value);
+    this.clearError('startDate');
+    this.clearError('endDate');
+    this.clearError('durationDay');
+    this.clearError('durationNight');
+    this.autoCalcDuration();
+  }
+
+  onEndDateChange(value: string) {
+    this.endDate.set(value);
+    this.clearError('endDate');
+    this.clearError('durationDay');
+    this.clearError('durationNight');
+    this.autoCalcDuration();
+  }
+
+  private autoCalcDuration() {
+    const sd = this.startDate();
+    const ed = this.endDate();
+    if (!sd || !ed) { return; }
+    const start = new Date(sd);
+    const end = new Date(ed);
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) { return; }
+    const diffMs = end.getTime() - start.getTime();
+    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays < 0) { return; }
+    this.durationDay.set(diffDays + 1);
+    this.durationNight.set(diffDays);
   }
 
   get countryOptions() {
@@ -129,8 +181,78 @@ export class JourneyForm implements OnInit {
     return ['PLANNING', 'IN_PROGRESS', 'FINISHED'] as const;
   }
 
+  private validate(): boolean {
+    const t = (key: string, params?: Record<string, unknown>) => this.translate.instant(key, params);
+    const errs: {
+      name?: string; description?: string; country?: string;
+      startDate?: string; endDate?: string;
+      durationDay?: string; durationNight?: string; duration?: string;
+      status?: string;
+    } = {};
+
+    if (!this.name().trim()) {
+      errs.name = t('validation.required', { field: t('journeyForm.labelName') });
+    }
+    if (!this.description().trim()) {
+      errs.description = t('validation.required', { field: t('journeyForm.labelDescription') });
+    }
+    if (!this.countryId()) {
+      errs.country = t('validation.required', { field: t('journeyForm.labelCountry') });
+    }
+    if (!this.startDate()) {
+      errs.startDate = t('validation.required', { field: t('journeyForm.labelStartDate') });
+    }
+    if (!this.status()) {
+      errs.status = t('validation.required', { field: t('journeyForm.labelStatus') });
+    }
+
+    const sd = this.startDate();
+    const ed = this.endDate();
+    if (sd && ed && ed <= sd) {
+      errs.endDate = t('validation.endDateGreater');
+    }
+
+    const dd = this.durationDay();
+    const dn = this.durationNight();
+    const day = typeof dd === 'string' ? +dd : dd;
+    const night = typeof dn === 'string' ? +dn : dn;
+
+    if (dd !== '' && day <= 0) {
+      errs.durationDay = t('validation.greaterThanZero');
+    }
+    if (dn !== '' && night <= 0) {
+      errs.durationNight = t('validation.greaterThanZero');
+    }
+    if (day > 0 && night > 0 && Math.abs(day - night) > 1) {
+      errs.duration = t('validation.durationInvalid');
+    }
+
+    if (sd && ed && dd !== '' && day > 0) {
+      const start = new Date(sd);
+      const end = new Date(ed);
+      if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
+        const diff = Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+        if (day > diff) {
+          errs.durationDay = t('validation.dayMismatch');
+        }
+        if (night > 0 && night > diff) {
+          errs.durationNight = t('validation.nightMismatch');
+        }
+      }
+    }
+
+    this.errors.set(errs);
+    this.topError.set(Object.keys(errs).length > 0);
+    return Object.keys(errs).length === 0;
+  }
+
   save() {
     if (this.saving()) { return; }
+    this.topError.set(false);
+    this.errors.set({});
+
+    if (!this.validate()) { return; }
+
     this.saving.set(true);
 
     const request: JourneyRequest = {

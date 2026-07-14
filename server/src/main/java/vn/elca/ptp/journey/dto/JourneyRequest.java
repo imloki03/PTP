@@ -7,7 +7,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import vn.elca.ptp.journey.domain.enums.JourneyStatus;
+import vn.elca.ptp.journey.validation.JourneyValid;
 
+@JourneyValid
 public record JourneyRequest(
         @NotBlank String name,
         @NotBlank String description,
