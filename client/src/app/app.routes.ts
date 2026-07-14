@@ -18,4 +18,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/journey-form/journey-form').then((m) => m.JourneyForm),
   },
+  {
+    path: 'error',
+    loadComponent: () =>
+      import('./pages/error-page/error-page').then((m) => m.ErrorPage),
+  },
+  { path: '**', redirectTo: '/error' },
 ];
