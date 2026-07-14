@@ -1,5 +1,7 @@
 package vn.elca.ptp.journey.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,4 +15,5 @@ public interface JourneyService {
     Page<JourneyDTO> searchJourneys(Pageable pageable, JourneyFilter filter);
     JourneyDTO updateJourney(Long journeyId, JourneyRequest journeyDTO);
     void deleteJourney(Long journeyId);
+    void deleteJourneys(List<Long> ids);
 }

@@ -4,6 +4,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static vn.elca.ptp.common.constant.MessageKey.JOURNEY_CREATED;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -68,6 +70,13 @@ public class JourneyController {
     @DeleteMapping("/{journeyId}")
     public ResponseEntity<?> deleteJourney(@PathVariable Long journeyId) {
         journeyService.deleteJourney(journeyId);
+        return ResponseEntity.ok(ApiResponse.success(null,
+                messageBundleUtils.getMessage(MessageKey.JOURNEY_DELETED)));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteJourneys(@RequestBody List<Long> ids) {
+        journeyService.deleteJourneys(ids);
         return ResponseEntity.ok(ApiResponse.success(null,
                 messageBundleUtils.getMessage(MessageKey.JOURNEY_DELETED)));
     }

@@ -6,10 +6,12 @@ import static vn.elca.ptp.common.constant.MessageKey.JOURNEY_NOT_FOUND;
 import static vn.elca.ptp.common.constant.MessageKey.PLACE_NOT_FOUND;
 import static vn.elca.ptp.common.constant.MessageKey.PLACE_NOT_IN_COUNTRY;
 
+import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -30,7 +32,6 @@ import vn.elca.ptp.journey.service.JourneyService;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class JourneyServiceImpl implements JourneyService {
     private final JourneyRepository journeyRepository;
     private final CountryRepository countryRepository;
@@ -47,6 +48,7 @@ public class JourneyServiceImpl implements JourneyService {
         return journeyMapper.toDto(journey);
     }
 
+    //TODO offset issue
     @Override
     public Page<JourneyDTO> searchJourneys(Pageable pageable, JourneyFilter filter) {
         return journeyRepository.searchJourneys(pageable, filter);
@@ -80,7 +82,16 @@ public class JourneyServiceImpl implements JourneyService {
         journeyRepository.save(journey);
     }
 
-    //TODO: add a batch soft delete method
+    @Override
+    public void deleteJourneys(List<Long> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return;
+        }
+        //TODO: partition
+        List<Journey> journeys = journeyRepository.findAllById(ids);
+        journeys.forEach(j -> j.setStatus(JourneyStatus.DELETED));
+        journeyRepository.saveAll(journeys);
+    }
 
     private void resolveReferences(Journey journey, JourneyRequest request) {
         journey.setCountry(countryRepository.findById(request.countryId())

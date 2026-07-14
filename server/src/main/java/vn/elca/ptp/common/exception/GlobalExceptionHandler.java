@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(message));
     }
 
-    //catch concurrent update
+    //TODO: catch concurrent update
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGeneral(Exception ex) {

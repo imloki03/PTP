@@ -117,14 +117,9 @@ export class Homepage implements OnInit {
       data: this.translate.instant('dialog.confirmDelete'),
     }).afterClosed().subscribe((confirmed) => {
       if (!confirmed) { return; }
-      let completed = 0;
-      ids.forEach((id) => {
-        this.journeyService.deleteJourney(id).subscribe(() => {
-          completed++;
-          if (completed === ids.length) {
-            this.loadJourneys();
-          }
-        });
+      this.journeyService.deleteJourneys(ids).subscribe(() => {
+        this.selectedIds.set([]);
+        this.loadJourneys();
       });
     });
   }

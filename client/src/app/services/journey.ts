@@ -34,4 +34,8 @@ export class JourneyService {
   deleteJourney(id: number): Observable<ApiResponse<null>> {
     return this.http.delete<ApiResponse<null>>(`${this.baseUrl}/${id}`);
   }
+
+  deleteJourneys(ids: number[]): Observable<ApiResponse<null>> {
+    return this.http.delete<ApiResponse<null>>(`${this.baseUrl}`, { body: ids });
+  }
 }
