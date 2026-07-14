@@ -50,10 +50,17 @@
     "deleteTitle": "Confirm Delete",
     "delete": "Delete",
     "cancel": "Cancel",
+    "ok": "OK",
     "confirmDelete": "Do you want to delete ?"
   },
   "pagination": {
-    "showing": "Showing {{start}} to {{end}} of {{total}} entries"
+    "showing": "Showing {{start}} to {{end}} of {{total}} entries",
+    "itemsPerPage": "Items per page:",
+    "nextPage": "Next page",
+    "previousPage": "Previous page",
+    "firstPage": "First page",
+    "lastPage": "Last page",
+    "empty": "No entries"
   },
   "journeyForm": {
     "cardTitleCreate": "New journey info",
@@ -78,5 +85,9 @@
     "selectCountry": "Select a country",
     "selectPlace": "Select a place",
     "selectCurrency": "Select a currency"
+  },
+  "error": {
+    "message": "Sorry. A problem has occured. Please contact to administrator or back to Home page.",
+    "homeLink": "Back to Home page"
   }
 }

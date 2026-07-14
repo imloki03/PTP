@@ -17,18 +17,18 @@
   "filter": {
     "searchPlaceholder": "Rechercher par nom, description",
     "status": "Statut",
-    "country": "Pays",
-    "currency": "Devise",
+    "country": "Pays d'origine",
+    "currency": "Monnaie",
     "amount": "Montant",
     "from": "De",
     "to": "À",
-    "startDate": "Date de début",
+    "startDate": "Date de debút",
     "endDate": "Date de fin",
     "search": "Rechercher",
     "reset": "Réinitialiser"
   },
   "status": {
-    "PLANNING": "Planification",
+    "PLANNING": "Planifier",
     "IN_PROGRESS": "En cours",
     "FINISHED": "Terminé"
   },
@@ -47,17 +47,24 @@
     "countryLabel": "Vietnam"
   },
   "dialog": {
-    "deleteTitle": "Confirmer la suppression",
+    "deleteTitle": "Supprimer la confirmation",
     "delete": "Supprimer",
+    "ok": "OK",
     "cancel": "Annuler",
     "confirmDelete": "Vouler-vous supprimer ?"
   },
   "pagination": {
-    "showing": "Affichage de {{start}} à {{end}} sur {{total}} entrées"
+    "showing": "Affichant {{start}} à {{end}} de {{total}} entrées",
+    "itemsPerPage": "Éléments par page :",
+    "nextPage": "Page suivante",
+    "previousPage": "Page précédente",
+    "firstPage": "Première page",
+    "lastPage": "Dernière page",
+    "empty": "Aucune entrée"
   },
   "journeyForm": {
-    "cardTitleCreate": "Nouveau voyage",
-    "cardTitleEdit": "Modifier le voyage",
+    "cardTitleCreate": "Nouvelle info sur le voyage",
+    "cardTitleEdit": "Modifier les info sur le voyage",
     "breadcrumbNew": "Nouveau",
     "breadcrumbEdit": "Modifier",
     "labelName": "Nom",
@@ -72,11 +79,15 @@
     "labelStatus": "Statut",
     "day": "jour (s)",
     "night": "nuit (s)",
-    "save": "Enregistrer",
-    "discard": "Annuler",
+    "save": "Sauvegarder",
+    "discard": "Rejeter",
     "newJourney": "Nouveau voyage",
     "selectCountry": "Sélectionner un pays",
     "selectPlace": "Sélectionner un lieu",
     "selectCurrency": "Sélectionner une devise"
+  },
+  "error": {
+    "message": "Désolé. Un problème est survenu. Veuillez contacter l'administrateur ou revenir à la page d'accueil.",
+    "homeLink": "Retour à l'accueil"
   }
 }
