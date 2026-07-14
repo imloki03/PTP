@@ -1,11 +1,11 @@
-import { Component, input, output } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
-import { Checkbox } from '../../ui/checkbox/checkbox';
-import { JourneyRow } from '../journey-row/journey-row';
-import { Pagination } from '../../ui/pagination/pagination';
-import { Button } from '../../ui/button/button';
-import type { Journey } from '../../models/journey';
-import type { PageEvent } from '@angular/material/paginator';
+import {Component, input, output} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
+import {Checkbox} from '../../ui/checkbox/checkbox';
+import {JourneyRow} from '../journey-row/journey-row';
+import {Pagination} from '../../ui/pagination/pagination';
+import {Button} from '../../ui/button/button';
+import type {Journey} from '../../models/journey';
+import type {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-journey-table',

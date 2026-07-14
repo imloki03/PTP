@@ -1,19 +1,19 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import type { Observable } from 'rxjs';
-import type { ApiResponse } from '../models/api-response';
-import type { Journey } from '../models/journey';
-import type { JourneyFilter } from '../models/journey-filter';
-import type { JourneyRequest } from '../models/journey-request';
-import type { PagedResponse } from '../models/paged-response';
-import { environment } from '../../environments/environment';
+import {HttpClient} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
+import type {Observable} from 'rxjs';
+import type {ApiResponse} from '../models/api-response';
+import type {Journey} from '../models/journey';
+import type {JourneyFilter} from '../models/journey-filter';
+import type {JourneyRequest} from '../models/journey-request';
+import type {PagedResponse} from '../models/paged-response';
+import {environment} from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class JourneyService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiBase}/api/journeys`;
 
-  getJourneys(page = 0, size = 5, filter?: JourneyFilter): Observable<ApiResponse<PagedResponse<Journey>>> {
+  searchJourneys(page = 0, size = 5, filter?: JourneyFilter): Observable<ApiResponse<PagedResponse<Journey>>> {
     return this.http.post<ApiResponse<PagedResponse<Journey>>>(`${this.baseUrl}/search`, filter ?? {}, {
       params: { page, size },
     });

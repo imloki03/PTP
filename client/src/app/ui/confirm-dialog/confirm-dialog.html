@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>{{ 'dialog.deleteTitle' | translate }}</h2>
+<mat-dialog-content>
+  <p>{{ data }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false">{{ 'dialog.cancel' | translate }}</button>
+  <button mat-flat-button color="warn" [mat-dialog-close]="true" cdkFocusInitial>{{ 'dialog.delete' | translate }}</button>
+</mat-dialog-actions>

@@ -1,7 +1,9 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {TranslateService, TranslatePipe} from '@ngx-translate/core';
+import {MatDialog} from '@angular/material/dialog';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Button} from '../../ui/button/button';
+import {ConfirmDialog} from '../../ui/confirm-dialog/confirm-dialog';
 import {JourneySearchPanel} from '../../components/journey-search-panel/journey-search-panel';
 import {JourneyTable} from '../../components/journey-table/journey-table';
 import type {PageEvent} from '@angular/material/paginator';
@@ -20,39 +22,40 @@ import {JourneyService} from '../../services/journey';
 })
 export class Homepage implements OnInit {
   private readonly journeyService = inject(JourneyService);
+  private readonly dialog = inject(MatDialog);
   protected readonly translate = inject(TranslateService);
 
   switchLang(lang: string) {
     this.translate.use(lang);
   }
 
-  journeys: Journey[] = [];
-  totalElements = 0;
-  pageSize = 5;
-  page = 0;
-  selectedIds: number[] = [];
-  filter: JourneyFilter = {};
+  journeys = signal<Journey[]>([]);
+  totalElements = signal(0);
+  pageSize = signal(5);
+  page = signal(0);
+  selectedIds = signal<number[]>([]);
+  filter = signal<JourneyFilter>({});
 
   ngOnInit() {
     this.loadJourneys();
   }
 
   get allSelected(): boolean {
-    return this.journeys.length > 0 && this.selectedIds.length === this.journeys.length;
+    return this.journeys().length > 0 && this.selectedIds().length === this.journeys().length;
   }
 
   loadJourneys() {
-    this.journeyService.getJourneys(this.page, this.pageSize, this.filter).subscribe((res) => {
+    this.journeyService.searchJourneys(this.page(), this.pageSize(), this.filter()).subscribe((res) => {
       if (!res.data) { return; }
-      this.journeys = res.data.content;
-      this.totalElements = res.data.totalElements;
-      this.selectedIds = [];
+      this.journeys.set(res.data.content);
+      this.totalElements.set(res.data.totalElements);
+      this.selectedIds.set([]);
     });
   }
 
   onPageChange(event: PageEvent) {
-    this.page = event.pageIndex;
-    this.pageSize = event.pageSize;
+    this.page.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
     this.loadJourneys();
   }
 
@@ -61,32 +64,34 @@ export class Homepage implements OnInit {
   }
 
   onSearch(filter: JourneyFilter) {
-    this.filter = filter;
-    this.page = 0;
+    this.filter.set(filter);
+    this.page.set(0);
     this.loadJourneys();
   }
 
   onReset() {
-    this.filter = {};
-    this.page = 0;
+    this.filter.set({});
+    this.page.set(0);
     this.loadJourneys();
   }
 
   onToggleAll() {
     if (this.allSelected) {
-      this.selectedIds = [];
+      this.selectedIds.set([]);
     } else {
-      this.selectedIds = this.journeys.map((j) => j.id);
+      this.selectedIds.set(this.journeys().map((j) => j.id));
     }
   }
 
   onToggleRow(id: number) {
-    const idx = this.selectedIds.indexOf(id);
-    if (idx >= 0) {
-      this.selectedIds.splice(idx, 1);
-    } else {
-      this.selectedIds.push(id);
-    }
+    this.selectedIds.update((prev) => {
+      const idx = prev.indexOf(id);
+      if (idx >= 0) {
+        return prev.filter((v) => v !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
   }
 
   onEdit(id: number) {
@@ -94,18 +99,31 @@ export class Homepage implements OnInit {
   }
 
   onDelete(id: number) {
-    this.journeyService.deleteJourney(id).subscribe(() => this.loadJourneys());
+    const name = this.journeys().find((j) => j.id === id)?.name ?? '';
+    this.dialog.open(ConfirmDialog, {
+      data: this.translate.instant('dialog.confirmDelete'),
+    }).afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.journeyService.deleteJourney(id).subscribe(() => this.loadJourneys());
+      }
+    });
   }
 
   onDeleteSelected() {
-    const ids = [...this.selectedIds];
-    let completed = 0;
-    ids.forEach((id) => {
-      this.journeyService.deleteJourney(id).subscribe(() => {
-        completed++;
-        if (completed === ids.length) {
-          this.loadJourneys();
-        }
+    const ids = this.selectedIds();
+    if (ids.length === 0) { return; }
+    this.dialog.open(ConfirmDialog, {
+      data: this.translate.instant('dialog.confirmDelete'),
+    }).afterClosed().subscribe((confirmed) => {
+      if (!confirmed) { return; }
+      let completed = 0;
+      ids.forEach((id) => {
+        this.journeyService.deleteJourney(id).subscribe(() => {
+          completed++;
+          if (completed === ids.length) {
+            this.loadJourneys();
+          }
+        });
       });
     });
   }

@@ -40,11 +40,11 @@
   />
   <div class="card-divider"></div>
   <app-journey-table
-    [journeys]="journeys"
-    [totalElements]="totalElements"
-    [pageSize]="pageSize"
-    [pageIndex]="page"
-    [selectedIds]="selectedIds"
+    [journeys]="journeys()"
+    [totalElements]="totalElements()"
+    [pageSize]="pageSize()"
+    [pageIndex]="page()"
+    [selectedIds]="selectedIds()"
     [allSelected]="allSelected"
     (toggleAll)="onToggleAll()"
     (toggleRow)="onToggleRow($event)"

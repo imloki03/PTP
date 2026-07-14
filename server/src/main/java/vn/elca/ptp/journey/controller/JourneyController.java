@@ -37,7 +37,7 @@ public class JourneyController {
     private final JourneyService journeyService;
     private final MessageBundleUtils messageBundleUtils;
 
-    //add swagger
+    //TODO: add swagger
     @PostMapping
     public ResponseEntity<?> createJourney(@Valid @RequestBody JourneyRequest request) {
         JourneyDTO journey = journeyService.createJourney(request);

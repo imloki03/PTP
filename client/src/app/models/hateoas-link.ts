@@ -3,9 +3,9 @@ export interface HateoasLink {
 }
 
 export interface HateoasLinks {
-  self?: HateoasLink;
+  self: HateoasLink;
 }
 
 export interface HateoasResource {
-  _links?: HateoasLinks;
+  _links: HateoasLinks;
 }

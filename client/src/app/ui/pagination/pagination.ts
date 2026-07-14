@@ -1,11 +1,9 @@
-import { Component, input, output } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { PageEvent } from '@angular/material/paginator';
-import { TranslatePipe } from '@ngx-translate/core';
+import {Component, input, output} from '@angular/core';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-pagination',
-  imports: [MatPaginator, TranslatePipe],
+  imports: [MatPaginator],
   templateUrl: './pagination.html',
 })
 export class Pagination {

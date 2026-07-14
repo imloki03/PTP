@@ -46,6 +46,12 @@
     "deleteTooltip": "Supprimer {{name}}",
     "countryLabel": "Vietnam"
   },
+  "dialog": {
+    "deleteTitle": "Confirmer la suppression",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "confirmDelete": "Vouler-vous supprimer ?"
+  },
   "pagination": {
     "showing": "Affichage de {{start}} à {{end}} sur {{total}} entrées"
   }

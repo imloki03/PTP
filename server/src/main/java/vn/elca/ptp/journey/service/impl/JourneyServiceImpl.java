@@ -79,6 +79,8 @@ public class JourneyServiceImpl implements JourneyService {
         journeyRepository.deleteById(journeyId);
     }
 
+    //TODO: add a batch delete method
+
     private void resolveReferences(Journey journey, JourneyRequest request) {
         journey.setCountry(countryRepository.findById(request.countryId())
                 .orElseThrow(() -> new EntityNotFoundException(
