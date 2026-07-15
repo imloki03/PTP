@@ -91,3 +91,10 @@ mat-progress-bar {
 mat-progress-bar.hidden {
   visibility: hidden;
 }
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 1001;
+}

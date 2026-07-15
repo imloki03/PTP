@@ -19,4 +19,8 @@
 
 <mat-progress-bar mode="indeterminate" [class.hidden]="!loading()" />
 
+@if (loading()) {
+  <div class="loading-overlay"></div>
+}
+
 <ng-content />

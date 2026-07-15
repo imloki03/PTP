@@ -2,6 +2,7 @@ ptp:
   file:
     storage-type: LOCAL
     upload-dir: uploads
+  simulated-delay-ms: 1000
 
 spring:
   servlet:
