@@ -1,6 +1,8 @@
 package vn.elca.ptp.file.exception;
 
-public class FileStorageException extends RuntimeException {
+import vn.elca.ptp.common.exception.BusinessException;
+
+public class FileStorageException extends BusinessException {
     public FileStorageException(String message, Throwable cause) {
         super(message, cause);
     }

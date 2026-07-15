@@ -1,6 +1,8 @@
 package vn.elca.ptp.common.constant;
 
 public final class MessageKey {
+    private MessageKey() {}
+
     public static final String COUNTRY_NOT_FOUND = "country.notfound";
     public static final String CURRENCY_NOT_FOUND = "currency.notfound";
     public static final String INTERNAL_ERROR = "internal.error";
@@ -13,6 +15,7 @@ public final class MessageKey {
     public static final String JOURNEY_CONCURRENT_UPDATE = "journey.concurrentUpdate";
     public static final String PLACE_NOT_FOUND = "place.notfound";
     public static final String PLACE_NOT_IN_COUNTRY = "place.notInCountry";
+    public static final String FILE_NOT_FOUND = "file.notfound";
     public static final String FILE_STORAGE_FAILED = "file.storage.failed";
     public static final String FILE_STORAGE_DIR_CREATE = "file.storage.dir.create";
     public static final String FILE_PERSISTENCE_FAILED = "file.persistence.failed";

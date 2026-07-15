@@ -56,7 +56,8 @@ public class JourneyServiceImpl implements JourneyService {
     @Override
     @Transactional(readOnly = true)
     public Page<JourneyDTO> searchJourneys(Pageable pageable, JourneyFilter filter) {
-        return journeyRepository.searchJourneys(pageable, filter);
+        Page<Journey> page = journeyRepository.searchJourneys(pageable, filter);
+        return page.map(journeyMapper::toDto);
     }
 
     @Override

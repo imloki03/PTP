@@ -1,5 +1,6 @@
 package vn.elca.ptp.file.service.impl;
 
+import static vn.elca.ptp.common.constant.MessageKey.FILE_NOT_FOUND;
 import static vn.elca.ptp.common.constant.MessageKey.FILE_PERSISTENCE_FAILED;
 import static vn.elca.ptp.common.constant.MessageKey.FILE_STORAGE_FAILED;
 
@@ -92,17 +93,15 @@ public class MediaFileServiceImpl implements MediaFileService {
     @Override
     @Transactional(readOnly = true)
     public MediaFileDTO getFile(Long fileId) {
-        MediaFile entry = mediaFileRepository.findById(fileId)
-                .filter(mf -> !Boolean.TRUE.equals(mf.getDeleted()))
-                .orElseThrow(() -> new EntityNotFoundException("File not found: " + fileId));
+        MediaFile entry = mediaFileRepository.findByIdAndDeletedFalse(fileId)
+                .orElseThrow(() -> new EntityNotFoundException(messageBundleUtils.getMessage(FILE_NOT_FOUND, fileId)));
         return mediaFileMapper.toDto(entry);
     }
 
     @Override
     public void deleteFile(Long fileId) {
-        MediaFile entry = mediaFileRepository.findById(fileId)
-                .filter(mf -> !Boolean.TRUE.equals(mf.getDeleted()))
-                .orElseThrow(() -> new EntityNotFoundException("File not found: " + fileId));
+        MediaFile entry = mediaFileRepository.findByIdAndDeletedFalse(fileId)
+                .orElseThrow(() -> new EntityNotFoundException(messageBundleUtils.getMessage(FILE_NOT_FOUND, fileId)));
         Long journeyId = entry.getJourneyId();
         fileStorageService.delete(entry);
         entry.setDeleted(true);

@@ -35,32 +35,32 @@ public class FileController {
     private final LocalFileStorageService localFileStorageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFiles(@RequestParam("files") List<MultipartFile> files,
+    public ResponseEntity<ApiResponse<List<MediaFileDTO>>> uploadFiles(@RequestParam("files") List<MultipartFile> files,
                                          @RequestParam(value = "journeyId") Long journeyId) {
         List<MediaFileDTO> result = mediaFileService.uploadFiles(journeyId, files);
         return ResponseEntity.ok(ApiResponse.success(result));
     }
 
     @GetMapping("/journey/{journeyId}")
-    public ResponseEntity<?> getJourneyFiles(@PathVariable Long journeyId) {
+    public ResponseEntity<ApiResponse<List<MediaFileDTO>>> getJourneyFiles(@PathVariable Long journeyId) {
         List<MediaFileDTO> files = mediaFileService.getFilesByJourney(journeyId);
         return ResponseEntity.ok(ApiResponse.success(files));
     }
 
     @GetMapping("/{fileId}")
-    public ResponseEntity<?> getFile(@PathVariable Long fileId) {
+    public ResponseEntity<ApiResponse<MediaFileDTO>> getFile(@PathVariable Long fileId) {
         MediaFileDTO file = mediaFileService.getFile(fileId);
         return ResponseEntity.ok(ApiResponse.success(file));
     }
 
     @DeleteMapping("/{fileId}")
-    public ResponseEntity<?> deleteFile(@PathVariable Long fileId) {
+    public ResponseEntity<ApiResponse<Void>> deleteFile(@PathVariable Long fileId) {
         mediaFileService.deleteFile(fileId);
-        return ResponseEntity.ok(ApiResponse.success(null));
+        return ResponseEntity.ok(ApiResponse.<Void>success(null));
     }
 
     @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<?> downloadFile(@PathVariable String fileName) {
+    public ResponseEntity<Object> downloadFile(@PathVariable String fileName) {
         try {
             String decoded = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
             Path filePath = localFileStorageService.getUploadPath().resolve(decoded).normalize();

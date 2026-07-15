@@ -23,7 +23,7 @@ public class JourneyValidator implements ConstraintValidator<JourneyValid, Journ
     private boolean validateEndDate(JourneyRequest request, ConstraintValidatorContext context) {
         LocalDate start = request.startDate();
         LocalDate end = request.endDate();
-        if (start != null && end != null && !end.isAfter(start)) {
+        if (end != null && !end.isAfter(start)) {
             context.buildConstraintViolationWithTemplate("{validation.endDate.afterStart}")
                     .addPropertyNode("endDate")
                     .addConstraintViolation();
@@ -58,7 +58,7 @@ public class JourneyValidator implements ConstraintValidator<JourneyValid, Journ
 
         LocalDate start = request.startDate();
         LocalDate end = request.endDate();
-        if (start != null && end != null && day != null && day > 0) {
+        if (end != null && day != null && day > 0) {
             long diff = ChronoUnit.DAYS.between(start, end) + 1;
             if (day > diff) {
                 context.buildConstraintViolationWithTemplate("{validation.duration.dayMismatch}")

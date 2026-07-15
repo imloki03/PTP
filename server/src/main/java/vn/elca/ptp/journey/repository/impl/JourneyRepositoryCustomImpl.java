@@ -11,25 +11,20 @@ import org.springframework.stereotype.Repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import vn.elca.ptp.journey.domain.Journey;
 import vn.elca.ptp.journey.domain.QJourney;
 import vn.elca.ptp.journey.domain.enums.JourneyStatus;
-import vn.elca.ptp.journey.dto.JourneyDTO;
 import vn.elca.ptp.journey.dto.JourneyFilter;
-import vn.elca.ptp.journey.mapper.JourneyMapper;
 import vn.elca.ptp.journey.repository.JourneyRepositoryCustom;
 
 @Repository
 @RequiredArgsConstructor
 public class JourneyRepositoryCustomImpl implements JourneyRepositoryCustom {
-    private final EntityManager entityManager;
-    private final JourneyMapper journeyMapper;
+    private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<JourneyDTO> searchJourneys(Pageable pageable, JourneyFilter filter) {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+    public Page<Journey> searchJourneys(Pageable pageable, JourneyFilter filter) {
         QJourney journey = QJourney.journey;
         BooleanBuilder predicate = buildPredicate(filter, journey);
 
@@ -50,11 +45,7 @@ public class JourneyRepositoryCustomImpl implements JourneyRepositoryCustom {
                 .orderBy(journey.startDate.desc())
                 .fetch();
 
-        List<JourneyDTO> dtos = content.stream()
-                .map(journeyMapper::toDto)
-                .toList();
-
-        return new PageImpl<>(dtos, pageable, total);
+        return new PageImpl<>(content, pageable, total);
     }
 
     private BooleanBuilder buildPredicate(JourneyFilter filter, QJourney journey) {

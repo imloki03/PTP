@@ -1,6 +1,8 @@
 package vn.elca.ptp.file.exception;
 
-public class FilePersistenceException extends RuntimeException {
+import vn.elca.ptp.common.exception.BusinessException;
+
+public class FilePersistenceException extends BusinessException {
     public FilePersistenceException(String message, Throwable cause) {
         super(message, cause);
     }
