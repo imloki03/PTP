@@ -15,14 +15,12 @@ public class CloudinaryFileStorageService implements FileStorageService {
 
     @Override
     public String save(MediaFile entry, MultipartFile file) {
-        // TODO: implement Cloudinary upload when credentials are configured
-        log.info("Cloudinary upload placeholder for file: {}", entry.getOriginalName());
-        return "https://res.cloudinary.com/demo/image/upload/" + entry.getFileName();
+        //TODO: dư time thì làm
+        return null;
     }
 
     @Override
     public void delete(MediaFile entry) {
-        // TODO: implement Cloudinary deletion
-        log.info("Cloudinary delete placeholder for: {}", entry.getUrl());
+        //TODO: dư time thì làm
     }
 }

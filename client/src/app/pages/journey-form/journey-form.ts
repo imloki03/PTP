@@ -37,6 +37,7 @@ export class JourneyForm implements OnInit, OnDestroy {
   private readonly currencyService = inject(CurrencyService);
   private readonly dialog = inject(MatDialog);
   protected readonly translate = inject(TranslateService);
+  private readonly t = (key: string, params?: Record<string, unknown>) => this.translate.instant(key, params);
 
   mode: 'create' | 'edit' = 'create';
   journeyId: number | null = null;
@@ -75,14 +76,29 @@ export class JourneyForm implements OnInit, OnDestroy {
   topError = signal(false);
   uploadError = signal<string | null>(null);
 
+  private readonly maxFileSize = 5 * 1024 * 1024;
+  private readonly maxTotalSize = 50 * 1024 * 1024;
+
   images = signal<JourneyImageItem[]>([]);
   focusedImageId = signal<string | null>(null);
   nextClientId = 1;
 
   private addImagesFromFiles(files: File[]) {
     const newItems: JourneyImageItem[] = [];
+    let skipped = 0;
+    const currentSize = this.images()
+      .filter(i => i.file)
+      .reduce((sum, i) => sum + (i.file?.size ?? 0), 0);
     for (const file of files) {
       if (!file.type.startsWith('image/')) { continue; }
+      if (file.size > this.maxFileSize) {
+        skipped++;
+        continue;
+      }
+      if (currentSize + newItems.reduce((s, i) => s + (i.file?.size ?? 0), 0) + file.size > this.maxTotalSize) {
+        skipped++;
+        continue;
+      }
       const clientId = 'img_' + this.nextClientId++;
       newItems.push({
         clientId,
@@ -91,6 +107,9 @@ export class JourneyForm implements OnInit, OnDestroy {
         fileName: file.name,
         status: 'local',
       });
+    }
+    if (skipped > 0) {
+      this.uploadError.set(this.t('file.sizeExceeded', {count: skipped}));
     }
     if (newItems.length === 0) { return; }
     this.images.update(curr => [...curr, ...newItems]);

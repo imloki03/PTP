@@ -87,6 +87,9 @@
     "selectCurrency": "Select a currency",
     "optimisticLockError": "This journey was modified by another user. Please reload and try again."
   },
+  "file": {
+    "sizeExceeded": "{{count}} file(s) skipped — maximum upload size is 50MB (5MB per file)."
+  },
   "validation": {
     "required": "{{field}} is required.",
     "endDateGreater": "End date must be greater than Start date.",

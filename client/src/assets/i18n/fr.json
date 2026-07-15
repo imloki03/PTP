@@ -87,6 +87,9 @@
     "selectCurrency": "Sélectionner une devise",
     "optimisticLockError": "Ce voyage a été modifié par un autre utilisateur. Veuillez recharger et réessayer."
   },
+  "file": {
+    "sizeExceeded": "{{count}} fichier(s) ignoré(s) — la taille maximale de téléchargement est de 50 Mo (5 Mo par fichier)."
+  },
   "validation": {
     "required": "{{field}} est obligatoire.",
     "endDateGreater": "Date de debút doit être supérieur à Date de fin",
