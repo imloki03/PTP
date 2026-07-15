@@ -4,6 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Button} from '../../ui/button/button';
 import {ConfirmDialog} from '../../ui/confirm-dialog/confirm-dialog';
+import {PageLayout} from '../page-layout/page-layout';
 import {JourneySearchPanel} from '../../components/journey-search-panel/journey-search-panel';
 import {JourneyTable} from '../../components/journey-table/journey-table';
 import type {PageEvent} from '@angular/material/paginator';
@@ -15,7 +16,7 @@ import {JourneyService} from '../../services/journey';
   selector: 'app-homepage',
   imports: [
     RouterLink, Button, TranslatePipe,
-    JourneySearchPanel, JourneyTable,
+    PageLayout, JourneySearchPanel, JourneyTable,
   ],
   templateUrl: './homepage.html',
   styleUrls: ['./homepage.css'],
@@ -25,10 +26,6 @@ export class Homepage implements OnInit {
   private readonly journeyService = inject(JourneyService);
   private readonly dialog = inject(MatDialog);
   protected readonly translate = inject(TranslateService);
-
-  switchLang(lang: string) {
-    this.translate.use(lang);
-  }
 
   journeys = signal<Journey[]>([]);
   totalElements = signal(0);

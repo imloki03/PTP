@@ -10,6 +10,7 @@ import {CountryService} from '../../services/country';
 import {CurrencyService} from '../../services/currency';
 import {JourneyImageManager} from '../../components/journey-images/journey-image-manager';
 import {ConfirmImageDeletionDialog} from '../../ui/confirm-image-deletion-dialog/confirm-image-deletion-dialog';
+import {PageLayout} from '../page-layout/page-layout';
 import type {Country} from '../../models/country';
 import type {Currency} from '../../models/currency';
 import type {JourneyImageItem} from '../../models/journey-image-item';
@@ -22,7 +23,7 @@ import {environment} from '../../../environments/environment';
   selector: 'app-journey-form',
   imports: [
     RouterLink, MatIcon, TranslatePipe,
-    Button, JourneyImageManager,
+    Button, JourneyImageManager, PageLayout,
   ],
   templateUrl: './journey-form.html',
   styleUrls: ['./journey-form.css'],
@@ -479,9 +480,5 @@ export class JourneyForm implements OnInit, OnDestroy {
 
   onNewJourney() {
     this.router.navigate(['/journeys/new']);
-  }
-
-  switchLang(lang: string) {
-    this.translate.use(lang);
   }
 }
