@@ -1,5 +1,7 @@
 package vn.elca.ptp.file.service.impl;
 
+import static vn.elca.ptp.common.constant.MessageKey.FILE_STORAGE_DIR_CREATE;
+import static vn.elca.ptp.common.constant.MessageKey.FILE_STORAGE_FAILED;
 import static vn.elca.ptp.file.util.MediaFileUtils.extractFileNameFromUrl;
 
 import java.io.IOException;
@@ -19,7 +21,9 @@ import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import vn.elca.ptp.common.util.MessageBundleUtils;
 import vn.elca.ptp.file.config.FileProperties;
+import vn.elca.ptp.file.exception.FileStorageException;
 import vn.elca.ptp.file.domain.MediaFile;
 import vn.elca.ptp.file.service.FileStorageService;
 
@@ -30,6 +34,7 @@ import vn.elca.ptp.file.service.FileStorageService;
 public class LocalFileStorageService implements FileStorageService {
 
     private final FileProperties fileProperties;
+    private final MessageBundleUtils messageBundleUtils;
 
     @Getter
     private Path uploadPath;
@@ -53,7 +58,7 @@ public class LocalFileStorageService implements FileStorageService {
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, targetPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to store file " + storedName, e);
+            throw new FileStorageException(messageBundleUtils.getMessage(FILE_STORAGE_FAILED, storedName), e);
         }
 
         return "/api/files/download/" + URLEncoder.encode(storedName, StandardCharsets.UTF_8);
@@ -77,7 +82,7 @@ public class LocalFileStorageService implements FileStorageService {
         try {
             Files.createDirectories(uploadPath);
         } catch (IOException e) {
-            throw new RuntimeException("Could not create upload directory: " + uploadPath, e);
+            throw new FileStorageException(messageBundleUtils.getMessage(FILE_STORAGE_DIR_CREATE, uploadPath.toString()), e);
         }
     }
 }

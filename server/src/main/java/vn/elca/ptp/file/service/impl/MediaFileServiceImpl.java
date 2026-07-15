@@ -1,5 +1,8 @@
 package vn.elca.ptp.file.service.impl;
 
+import static vn.elca.ptp.common.constant.MessageKey.FILE_PERSISTENCE_FAILED;
+import static vn.elca.ptp.common.constant.MessageKey.FILE_STORAGE_FAILED;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +15,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import vn.elca.ptp.common.event.MediaFilesChangedEvent;
+import vn.elca.ptp.common.util.MessageBundleUtils;
 import vn.elca.ptp.file.config.FileProperties;
+import vn.elca.ptp.file.exception.FilePersistenceException;
+import vn.elca.ptp.file.exception.FileStorageException;
 import vn.elca.ptp.file.domain.MediaFile;
 import vn.elca.ptp.file.dto.MediaFileDTO;
 import vn.elca.ptp.file.mapper.MediaFileMapper;
@@ -31,6 +37,7 @@ public class MediaFileServiceImpl implements MediaFileService {
     private final FileProperties fileProperties;
     private final FileStorageService fileStorageService;
     private final ApplicationEventPublisher eventPublisher;
+    private final MessageBundleUtils messageBundleUtils;
 
     @Override
     public List<MediaFileDTO> uploadFiles(Long journeyId, List<MultipartFile> files) {
@@ -46,7 +53,7 @@ public class MediaFileServiceImpl implements MediaFileService {
                 savedToDisk.add(entry);
             } catch (Exception e) {
                 cleanupFiles(savedToDisk);
-                throw new RuntimeException("Failed to store file: " + file.getOriginalFilename(), e);
+                throw new FileStorageException(messageBundleUtils.getMessage(FILE_STORAGE_FAILED, file.getOriginalFilename()), e);
             }
         }
 
@@ -56,7 +63,7 @@ public class MediaFileServiceImpl implements MediaFileService {
             return persisted.stream().map(mediaFileMapper::toDto).toList();
         } catch (Exception e) {
             cleanupFiles(savedToDisk);
-            throw new RuntimeException("Failed to persist file metadata", e);
+            throw new FilePersistenceException(messageBundleUtils.getMessage(FILE_PERSISTENCE_FAILED), e);
         }
     }
 

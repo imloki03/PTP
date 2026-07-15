@@ -36,10 +36,7 @@ public class FileController {
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFiles(@RequestParam("files") List<MultipartFile> files,
-                                         @RequestParam(value = "journeyId", required = false) Long journeyId) {
-        if (journeyId == null) {
-            return ResponseEntity.badRequest().body(ApiResponse.failure("journeyId is required"));
-        }
+                                         @RequestParam(value = "journeyId") Long journeyId) {
         List<MediaFileDTO> result = mediaFileService.uploadFiles(journeyId, files);
         return ResponseEntity.ok(ApiResponse.success(result));
     }
@@ -83,8 +80,7 @@ public class FileController {
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                     .body(resource);
         } catch (IOException e) {
-            // TODO: do not use internal server error
-            return ResponseEntity.internalServerError().body(ApiResponse.failure("Failed to load file"));
+            return ResponseEntity.notFound().build();
         }
     }
 }

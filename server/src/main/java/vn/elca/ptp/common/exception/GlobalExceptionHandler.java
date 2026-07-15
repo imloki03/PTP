@@ -1,6 +1,8 @@
 package vn.elca.ptp.common.exception;
 
+import static vn.elca.ptp.common.constant.MessageKey.FILE_UPLOAD_EXCEEDED;
 import static vn.elca.ptp.common.constant.MessageKey.INTERNAL_ERROR;
+import static vn.elca.ptp.common.constant.MessageKey.OPTIMISTIC_LOCK_FAILED;
 import static vn.elca.ptp.common.constant.MessageKey.VALIDATION_FAILED;
 
 import org.springframework.http.HttpStatus;
@@ -51,13 +53,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<?> handleMaxUploadSize(MaxUploadSizeExceededException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.failure("File size exceeds the maximum allowed limit (5MB per file, 50MB total)."));
+                .body(ApiResponse.failure(messageBundleUtils.getMessage(FILE_UPLOAD_EXCEEDED)));
     }
 
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     public ResponseEntity<?> handleOptimisticLock(ObjectOptimisticLockingFailureException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(ApiResponse.failure("Concurrent update detected. Please reload and try again."));
+                .body(ApiResponse.failure(messageBundleUtils.getMessage(OPTIMISTIC_LOCK_FAILED)));
     }
 
     @ExceptionHandler(ResponseStatusException.class)

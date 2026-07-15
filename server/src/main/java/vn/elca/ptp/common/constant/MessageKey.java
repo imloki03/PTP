@@ -13,5 +13,10 @@ public final class MessageKey {
     public static final String JOURNEY_CONCURRENT_UPDATE = "journey.concurrentUpdate";
     public static final String PLACE_NOT_FOUND = "place.notfound";
     public static final String PLACE_NOT_IN_COUNTRY = "place.notInCountry";
+    public static final String FILE_STORAGE_FAILED = "file.storage.failed";
+    public static final String FILE_STORAGE_DIR_CREATE = "file.storage.dir.create";
+    public static final String FILE_PERSISTENCE_FAILED = "file.persistence.failed";
+    public static final String FILE_UPLOAD_EXCEEDED = "file.upload.exceeded";
+    public static final String OPTIMISTIC_LOCK_FAILED = "optimistic.lock.failed";
     public static final String VALIDATION_FAILED = "validation.failed";
 }
