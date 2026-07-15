@@ -9,6 +9,7 @@ import static vn.elca.ptp.common.constant.MessageKey.PLACE_NOT_IN_COUNTRY;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import vn.elca.ptp.common.event.JourneysDeletedEvent;
 import vn.elca.ptp.common.util.MessageBundleUtils;
 import vn.elca.ptp.journey.domain.Journey;
 import vn.elca.ptp.journey.domain.Place;
@@ -32,6 +34,7 @@ import vn.elca.ptp.journey.repository.PlaceRepository;
 import vn.elca.ptp.journey.service.JourneyService;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class JourneyServiceImpl implements JourneyService {
     private final JourneyRepository journeyRepository;
@@ -40,6 +43,7 @@ public class JourneyServiceImpl implements JourneyService {
     private final CurrencyRepository currencyRepository;
     private final JourneyMapper journeyMapper;
     private final MessageBundleUtils messageBundleUtils;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public JourneyDTO createJourney(JourneyRequest request) {
@@ -82,6 +86,7 @@ public class JourneyServiceImpl implements JourneyService {
                         messageBundleUtils.getMessage(JOURNEY_NOT_FOUND, journeyId)));
         journey.setStatus(JourneyStatus.DELETED);
         journeyRepository.save(journey);
+        eventPublisher.publishEvent(new JourneysDeletedEvent(List.of(journeyId)));
     }
 
     @Override
@@ -94,6 +99,7 @@ public class JourneyServiceImpl implements JourneyService {
         List<Journey> journeys = journeyRepository.findAllById(ids);
         journeys.forEach(j -> j.setStatus(JourneyStatus.DELETED));
         journeyRepository.saveAll(journeys);
+        eventPublisher.publishEvent(new JourneysDeletedEvent(ids));
     }
 
     private void resolveReferences(Journey journey, JourneyRequest request) {

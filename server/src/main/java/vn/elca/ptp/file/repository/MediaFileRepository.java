@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import vn.elca.ptp.file.domain.MediaFile;
 
-public interface MediaFileRepository extends JpaRepository<MediaFile, Long> {
+public interface MediaFileRepository extends JpaRepository<MediaFile, Long>, MediaFileRepositoryCustom {
     List<MediaFile> findByJourneyIdAndDeletedFalse(Long journeyId);
+    List<MediaFile> findByJourneyIdInAndDeletedFalse(List<Long> journeyIds);
     Optional<MediaFile> findFirstByJourneyIdAndDeletedFalseOrderByIdAsc(Long journeyId);
 }
