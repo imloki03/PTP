@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Delete image?</h2>
+<mat-dialog-content>
+  This image will be removed from the journey. This action cannot be undone after the journey is saved.
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button color="warn" [mat-dialog-close]="true">Delete</button>
+</mat-dialog-actions>

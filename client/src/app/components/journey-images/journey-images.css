@@ -1,0 +1,137 @@
+.journey-image-manager {
+  width: 100%;
+}
+
+.journey-image-manager--empty {
+  width: 502px;
+  height: 501px;
+}
+
+.add-image-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f8fa;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.add-image-tile:hover {
+  background: #eef1f5;
+}
+
+.add-image-tile--large {
+  width: 502px;
+  height: 501px;
+  border-radius: 4px;
+}
+
+.add-image-tile--thumbnail {
+  flex: 0 0 150px;
+  width: 150px;
+  height: 150px;
+  border-radius: 4px;
+}
+
+.add-icon {
+  width: 280px;
+  height: 255px;
+}
+
+.focused-preview {
+  position: relative;
+  width: 502px;
+  height: 501px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #f5f8fa;
+}
+
+.focused-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.delete-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.focused-preview:hover .delete-overlay {
+  opacity: 1;
+}
+
+.journey-image-strip {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 14px;
+  max-width: 502px;
+  overflow-x: auto;
+  padding: 0 0 6px;
+}
+
+.journey-image-thumbnail {
+  flex: 0 0 150px;
+  width: 150px;
+  height: 150px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #f5f8fa;
+  border: 2px solid transparent;
+  outline: none;
+}
+
+.journey-image-thumbnail.focused {
+  border-color: #08a8f4;
+  box-shadow: 0 0 0 2px #fff inset;
+}
+
+.journey-image-thumbnail:focus-visible {
+  box-shadow: 0 0 0 3px #08a8f4;
+}
+
+.thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb-delete {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.journey-image-thumbnail:hover .thumb-delete {
+  opacity: 1;
+}

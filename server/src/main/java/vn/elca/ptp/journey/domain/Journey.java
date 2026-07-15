@@ -56,4 +56,10 @@ public class Journey extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private JourneyStatus status;
+
+    private Long firstImageId;
+
+    private String firstImageUrl;
+
+    private String firstImageStorageType;
 }

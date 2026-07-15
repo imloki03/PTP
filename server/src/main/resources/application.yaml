@@ -1,4 +1,13 @@
+ptp:
+  file:
+    storage-type: LOCAL
+    upload-dir: uploads
+
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 50MB
   application:
     name: server
   messages:

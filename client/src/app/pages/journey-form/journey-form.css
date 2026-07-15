@@ -120,6 +120,24 @@
   margin: 0;
 }
 
+.card-body {
+  display: grid;
+  grid-template-columns: 502px minmax(0, 1fr);
+  column-gap: 85px;
+  padding: 0;
+}
+
+.card-image-col {
+  min-width: 0;
+}
+
+.card-form-col {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .card-divider {
   height: 1px;
   background: #e2e6ef;

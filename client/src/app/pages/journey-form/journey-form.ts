@@ -1,32 +1,40 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Button} from '../../ui/button/button';
 import {JourneyService} from '../../services/journey';
+import {FileService} from '../../services/file';
 import {CountryService} from '../../services/country';
 import {CurrencyService} from '../../services/currency';
+import {JourneyImageManager} from '../../components/journey-images/journey-image-manager';
+import {ConfirmImageDeletionDialog} from '../../ui/confirm-image-deletion-dialog/confirm-image-deletion-dialog';
 import type {Country} from '../../models/country';
 import type {Currency} from '../../models/currency';
+import type {JourneyImageItem} from '../../models/journey-image-item';
 import type {Place} from '../../models/place';
 import type {JourneyRequest} from '../../models/journey-request';
 import type {JourneyStatus} from '../../models/journey-status';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-journey-form',
   imports: [
     RouterLink, MatIcon, TranslatePipe,
-    Button,
+    Button, JourneyImageManager,
   ],
   templateUrl: './journey-form.html',
   styleUrls: ['./journey-form.css'],
 })
-export class JourneyForm implements OnInit {
+export class JourneyForm implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly journeyService = inject(JourneyService);
+  private readonly fileService = inject(FileService);
   private readonly countryService = inject(CountryService);
   private readonly currencyService = inject(CurrencyService);
+  private readonly dialog = inject(MatDialog);
   protected readonly translate = inject(TranslateService);
 
   mode: 'create' | 'edit' = 'create';
@@ -64,6 +72,93 @@ export class JourneyForm implements OnInit {
   }>({});
 
   topError = signal(false);
+  uploadError = signal<string | null>(null);
+
+  images = signal<JourneyImageItem[]>([]);
+  focusedImageId = signal<string | null>(null);
+  nextClientId = 1;
+
+  private addImagesFromFiles(files: File[]) {
+    const newItems: JourneyImageItem[] = [];
+    for (const file of files) {
+      if (!file.type.startsWith('image/')) { continue; }
+      const clientId = 'img_' + this.nextClientId++;
+      newItems.push({
+        clientId,
+        file,
+        sourceUrl: URL.createObjectURL(file),
+        fileName: file.name,
+        status: 'local',
+      });
+    }
+    if (newItems.length === 0) { return; }
+    this.images.update(curr => [...curr, ...newItems]);
+    const allImages = this.images();
+    if (allImages.length === newItems.length) {
+      this.focusedImageId.set(newItems[0].clientId);
+    }
+  }
+
+  ngOnDestroy() {
+    for (const img of this.images()) {
+      if (img.sourceUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(img.sourceUrl);
+      }
+    }
+  }
+
+  onFilesSelected(files: File[]) {
+    this.addImagesFromFiles(files);
+  }
+
+  onFocusImage(imageId: string) {
+    this.focusedImageId.set(imageId);
+  }
+
+  onRequestDelete(imageId: string) {
+    const img = this.images().find(i => i.clientId === imageId);
+    if (!img) { return; }
+    const dialogRef = this.dialog.open(ConfirmImageDeletionDialog, {
+      data: { imageName: img.fileName },
+    });
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (!confirmed) { return; }
+      if (img.serverId) {
+        if (img.sourceUrl.startsWith('blob:')) {
+          URL.revokeObjectURL(img.sourceUrl);
+        }
+        this.images.update(curr => curr.filter(i => i.clientId !== imageId));
+        if (this.focusedImageId() === imageId) {
+          this.updateFocusAfterDelete();
+        }
+        this.fileService.deleteImage(img.serverId).subscribe({
+          error: () => {
+            this.images.update(curr => [...curr, img]);
+            if (this.focusedImageId() === null) {
+              this.focusedImageId.set(img.clientId);
+            }
+          },
+        });
+      } else {
+        if (img.sourceUrl.startsWith('blob:')) {
+          URL.revokeObjectURL(img.sourceUrl);
+        }
+        this.images.update(curr => curr.filter(i => i.clientId !== imageId));
+        if (this.focusedImageId() === imageId) {
+          this.updateFocusAfterDelete();
+        }
+      }
+    });
+  }
+
+  private updateFocusAfterDelete() {
+    const remaining = this.images();
+    if (remaining.length > 0) {
+      this.focusedImageId.set(remaining[0].clientId);
+    } else {
+      this.focusedImageId.set(null);
+    }
+  }
 
   protected clearError(field: string) {
     this.errors.update(e => ({ ...e, [field]: undefined }));
@@ -113,6 +208,25 @@ export class JourneyForm implements OnInit {
       this.durationDay.set(j.durationDay ?? '');
       this.durationNight.set(j.durationNight ?? '');
       this.status.set(j.status);
+      this.loadImages();
+    });
+  }
+
+  private loadImages() {
+    if (!this.journeyId) { return; }
+    this.fileService.getJourneyImages(this.journeyId).subscribe(res => {
+      if (!res.data) { return; }
+      const items: JourneyImageItem[] = res.data.map(mf => ({
+        clientId: 'srv_' + mf.id,
+        serverId: mf.id,
+        sourceUrl: mf.url.startsWith('http') ? mf.url : `${environment.apiBase}${mf.url}`,
+        fileName: mf.originalName,
+        status: 'uploaded' as const,
+      }));
+      this.images.set(items);
+      if (items.length > 0) {
+        this.focusedImageId.set(items[0].clientId);
+      }
     });
   }
 
@@ -247,10 +361,21 @@ export class JourneyForm implements OnInit {
     return Object.keys(errs).length === 0;
   }
 
+  private uploadImages(journeyId: number, items: JourneyImageItem[]) {
+    const files = items.map(i => i.file!).filter(Boolean);
+    for (const item of items) {
+      this.images.update(curr =>
+        curr.map(i => i.clientId === item.clientId ? {...i, status: 'uploading' as const} : i)
+      );
+    }
+    return this.fileService.uploadFiles(journeyId, files);
+  }
+
   save() {
     if (this.saving()) { return; }
     this.topError.set(false);
     this.errors.set({});
+    this.uploadError.set(null);
 
     if (!this.validate()) { return; }
 
@@ -271,19 +396,81 @@ export class JourneyForm implements OnInit {
       status: this.status() as JourneyStatus,
     };
 
-    const obs = this.mode === 'create'
-      ? this.journeyService.createJourney(request)
-      : this.journeyService.updateJourney(this.journeyId!, request);
+    const localImages = this.images().filter(i => i.status === 'local' && i.file);
 
-    obs.subscribe({
-      next: () => {
-        this.saving.set(false);
-        this.router.navigate(['/journeys']);
-      },
-      error: () => {
-        this.saving.set(false);
-      },
-    });
+    if (this.mode === 'create') {
+      this.journeyService.createJourney(request).subscribe({
+        next: (res) => {
+          const journeyId = res.data?.id;
+          if (journeyId && localImages.length > 0) {
+            this.uploadImages(journeyId, localImages).subscribe({
+              next: (uploadRes) => {
+                if (uploadRes.data) {
+                  this.images.update(curr =>
+                    curr.map(i => {
+                      const uploaded = uploadRes.data!.find(mf => mf.originalName === i.fileName);
+                      return uploaded ? {...i, serverId: uploaded.id, status: 'uploaded' as const, file: undefined} : i;
+                    })
+                  );
+                }
+                this.saving.set(false);
+                this.router.navigate(['/journeys']);
+              },
+              error: (err) => {
+                this.uploadError.set(err.error?.message ?? 'Image upload failed. Please check file sizes and try again.');
+                this.images.update(curr =>
+                  curr.map(i => i.status === 'uploading' ? {...i, status: 'failed' as const} : i)
+                );
+                this.saving.set(false);
+              },
+            });
+          } else {
+            this.saving.set(false);
+            this.router.navigate(['/journeys']);
+          }
+        },
+        error: () => {
+          this.saving.set(false);
+        },
+      });
+    } else {
+      const doUpdate = () => {
+        this.journeyService.updateJourney(this.journeyId!, request).subscribe({
+          next: () => {
+            this.saving.set(false);
+            this.router.navigate(['/journeys']);
+          },
+          error: () => {
+            this.saving.set(false);
+          },
+        });
+      };
+
+      if (localImages.length > 0) {
+        this.uploadImages(this.journeyId!, localImages).subscribe({
+          next: (uploadRes) => {
+            if (uploadRes.data) {
+              this.images.update(curr =>
+                curr.map(i => {
+                  const uploaded = uploadRes.data!.find(mf => mf.originalName === i.fileName);
+                  return uploaded ? {...i, serverId: uploaded.id, status: 'uploaded' as const, file: undefined} : i;
+                })
+              );
+            }
+            doUpdate();
+          },
+          error: (err) => {
+            this.uploadError.set(err.error?.message ?? 'Image upload failed. Please check file sizes and try again.');
+            this.images.update(curr =>
+              curr.map(i => i.status === 'uploading' ? {...i, status: 'failed' as const} : i)
+            );
+            this.saving.set(false);
+          },
+        });
+      } else {
+        doUpdate();
+      }
+    }
   }
 
   discard() {

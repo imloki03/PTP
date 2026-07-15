@@ -21,6 +21,9 @@ public interface JourneyMapper {
     @Mapping(target = "country", ignore = true)
     @Mapping(target = "place", ignore = true)
     @Mapping(target = "currency", ignore = true)
+    @Mapping(target = "firstImageId", ignore = true)
+    @Mapping(target = "firstImageUrl", ignore = true)
+    @Mapping(target = "firstImageStorageType", ignore = true)
     Journey toEntity(JourneyRequest request);
 
     @Mapping(target = "id", ignore = true)
@@ -29,6 +32,9 @@ public interface JourneyMapper {
     @Mapping(target = "country", ignore = true)
     @Mapping(target = "place", ignore = true)
     @Mapping(target = "currency", ignore = true)
+    @Mapping(target = "firstImageId", ignore = true)
+    @Mapping(target = "firstImageUrl", ignore = true)
+    @Mapping(target = "firstImageStorageType", ignore = true)
     void updateEntity(@MappingTarget Journey journey, JourneyRequest request);
 
     @Mapping(target = "country", source = "country", qualifiedByName = "toDto")

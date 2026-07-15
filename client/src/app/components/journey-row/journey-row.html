@@ -1,6 +1,17 @@
 <tr [ngClass]="even() ? 'row-even' : 'row-odd'">
   <td class="col-check"><app-checkbox [checked]="selected()" (checkedChange)="toggle.emit()" /></td>
-  <td class="col-name">{{ journey().name }}</td>
+  <td class="col-name">
+    <div class="name-cell">
+      <div class="list-thumbnail">
+        @if (journey().firstImageUrl; as src) {
+          <img [src]="src.startsWith('http') ? src : (environment.apiBase + src)" alt="" class="thumb-img" loading="lazy" />
+        } @else {
+          <div class="thumb-placeholder"></div>
+        }
+      </div>
+      <span>{{ journey().name }}</span>
+    </div>
+  </td>
   <td class="col-desc truncate" [matTooltip]="journey().description">{{ journey().description }}</td>
   <td class="col-country">
     <div class="country-cell">

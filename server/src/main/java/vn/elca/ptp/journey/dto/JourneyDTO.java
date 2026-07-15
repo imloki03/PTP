@@ -26,4 +26,7 @@ public class JourneyDTO {
     private Integer durationNight;
     private JourneyStatus status;
     private Integer version;
+    private Long firstImageId;
+    private String firstImageUrl;
+    private String firstImageStorageType;
 }

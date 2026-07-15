@@ -12,6 +12,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -50,11 +51,13 @@ public class JourneyServiceImpl implements JourneyService {
 
     //TODO offset issue
     @Override
+    @Transactional(readOnly = true)
     public Page<JourneyDTO> searchJourneys(Pageable pageable, JourneyFilter filter) {
         return journeyRepository.searchJourneys(pageable, filter);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public JourneyDTO getJourney(Long journeyId) {
         Journey journey = journeyRepository.findById(journeyId)
                 .orElseThrow(() -> new EntityNotFoundException(

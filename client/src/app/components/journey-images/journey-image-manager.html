@@ -1,0 +1,46 @@
+@if (images().length === 0) {
+  <div class="journey-image-manager journey-image-manager--empty">
+    <button type="button" class="add-image-tile add-image-tile--large" (click)="fileInput.click()" [disabled]="disabled()">
+      <svg class="add-icon" viewBox="0 0 280 255" aria-hidden="true">
+        <rect x="60" y="0" width="160" height="40" rx="8" fill="#B2B2C1"/>
+        <rect x="20" y="60" width="240" height="40" rx="8" fill="#B2B2C1"/>
+        <rect x="60" y="120" width="160" height="40" rx="8" fill="#B2B2C1"/>
+        <rect x="0" y="180" width="280" height="40" rx="8" fill="#B2B2C1"/>
+        <line x1="140" y1="60" x2="140" y2="120" stroke="#B2B2C1" stroke-width="6" stroke-linecap="round"/>
+        <line x1="110" y1="90" x2="170" y2="90" stroke="#B2B2C1" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <input #fileInput type="file" accept="image/*" multiple (change)="onFilesSelected($event)" hidden />
+  </div>
+} @else {
+  <div class="journey-image-manager">
+    <div class="focused-preview">
+      @let focused = images().find(i => i.clientId === focusedImageId()) ?? images()[0];
+      <img [src]="focused.sourceUrl" [alt]="'Journey image ' + focused.fileName" class="focused-img" />
+      <button type="button" class="delete-overlay" (click)="requestDelete.emit(focused.clientId)" attr.aria-label="Delete {{ focused.fileName }}">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="2" y1="2" x2="14" y2="14"/><line x1="14" y1="2" x2="2" y2="14"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="journey-image-strip">
+      @for (img of images(); track img.clientId) {
+        <div class="journey-image-thumbnail" [class.focused]="img.clientId === (focusedImageId() ?? images()[0].clientId)" (click)="focusImage.emit(img.clientId)" (keydown.enter)="focusImage.emit(img.clientId)" (keydown.space)="focusImage.emit(img.clientId); $event.preventDefault()" tabindex="0" role="button" [attr.aria-pressed]="img.clientId === (focusedImageId() ?? images()[0].clientId)">
+          <img [src]="img.thumbnailUrl ?? img.sourceUrl" [alt]="'Journey image ' + img.fileName" class="thumb-img" />
+          <button type="button" class="thumb-delete" (click)="requestDelete.emit(img.clientId); $event.stopPropagation()" attr.aria-label="Delete journey image {{ $index + 1 }}">
+            <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/>
+            </svg>
+          </button>
+        </div>
+      }
+      <button type="button" class="add-image-tile add-image-tile--thumbnail" (click)="fileInput2.click()">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#B2B2C1" stroke-width="2" stroke-linecap="round">
+          <line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/>
+        </svg>
+      </button>
+      <input #fileInput2 type="file" accept="image/*" multiple (change)="onFilesSelected($event)" hidden />
+    </div>
+  </div>
+}

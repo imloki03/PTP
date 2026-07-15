@@ -6,6 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Checkbox } from '../../ui/checkbox/checkbox';
 import { IconButton } from '../../ui/icon-button/icon-button';
 import { JourneyStatusBadge } from '../journey-status-badge/journey-status-badge';
+import { environment } from '../../../environments/environment';
 import type { Journey } from '../../models/journey';
 
 @Component({
@@ -15,6 +16,7 @@ import type { Journey } from '../../models/journey';
   styleUrls: ['./journey-row.css'],
 })
 export class JourneyRow {
+  readonly environment = environment;
   readonly journey = input.required<Journey>();
   readonly selected = input(false);
   readonly even = input(false);

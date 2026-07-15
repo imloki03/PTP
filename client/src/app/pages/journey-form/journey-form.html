@@ -46,109 +46,125 @@
     }
   </h2>
 
-  @if (topError()) {
-    <div class="top-error">{{ 'validation.topError' | translate }}</div>
-  }
-
   <div class="card-divider"></div>
 
-  <div class="form-body">
+  <div class="card-body">
 
-    <div class="form-row">
-      <label class="col-lbl required">{{ 'journeyForm.labelName' | translate }}</label>
-      <div class="col-ctl">
-        <input class="filter-input" [class.input-error]="errors().name" [value]="name()" (input)="name.set($any($event.target).value); clearError('name')" [placeholder]="('journeyForm.labelName' | translate)" />
-        @if (errors().name) { <span class="field-error">{{ errors().name }}</span> }
-      </div>
+    <div class="card-image-col">
+      <app-journey-image-manager
+        [images]="images()"
+        [focusedImageId]="focusedImageId()"
+        (filesSelected)="onFilesSelected($event)"
+        (focusImage)="onFocusImage($event)"
+        (requestDelete)="onRequestDelete($event)"
+      />
     </div>
 
-    <div class="form-row">
-      <label class="col-lbl col-lbl-top required">{{ 'journeyForm.labelDescription' | translate }}</label>
-      <div class="col-ctl">
-        <textarea class="filter-input" [class.input-error]="errors().description" [value]="description()" (input)="description.set($any($event.target).value); clearError('description')" [placeholder]="('journeyForm.labelDescription' | translate)" rows="4"></textarea>
-        @if (errors().description) { <span class="field-error">{{ errors().description }}</span> }
-      </div>
-    </div>
+    <div class="card-form-col">
 
-    <div class="form-row">
-      <label class="col-lbl required">{{ 'journeyForm.labelCountry' | translate }}</label>
-      <div class="col-lctl">
-        <div class="field-wrapper">
-          <select class="filter-input" [class.input-error]="errors().country" [value]="countryId()" (change)="onCountryChange($event)">
+      @if (topError()) {
+        <div class="top-error">{{ 'validation.topError' | translate }}</div>
+      }
+      @if (uploadError(); as err) {
+        <div class="top-error">{{ err }}</div>
+      }
+
+      <div class="form-row">
+        <label class="col-lbl required">{{ 'journeyForm.labelName' | translate }}</label>
+        <div class="col-ctl">
+          <input class="filter-input" [class.input-error]="errors().name" [value]="name()" (input)="name.set($any($event.target).value); clearError('name')" [placeholder]="('journeyForm.labelName' | translate)" />
+          @if (errors().name) { <span class="field-error">{{ errors().name }}</span> }
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="col-lbl col-lbl-top required">{{ 'journeyForm.labelDescription' | translate }}</label>
+        <div class="col-ctl">
+          <textarea class="filter-input" [class.input-error]="errors().description" [value]="description()" (input)="description.set($any($event.target).value); clearError('description')" [placeholder]="('journeyForm.labelDescription' | translate)" rows="4"></textarea>
+          @if (errors().description) { <span class="field-error">{{ errors().description }}</span> }
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="col-lbl required">{{ 'journeyForm.labelCountry' | translate }}</label>
+        <div class="col-lctl">
+          <div class="field-wrapper">
+            <select class="filter-input" [class.input-error]="errors().country" [value]="countryId()" (change)="onCountryChange($event)">
+              <option value=""></option>
+              @for (c of countryOptions; track c.id) {
+                <option [value]="c.id">{{ c.name }}</option>
+              }
+            </select>
+            <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
+          </div>
+          @if (errors().country) { <span class="field-error">{{ errors().country }}</span> }
+        </div>
+        <label class="col-rlbl">{{ 'journeyForm.labelPlace' | translate }}</label>
+        <div class="field-wrapper col-rctl">
+          <select class="filter-input" [value]="placeId()" (change)="placeId.set($any($event.target).value)">
             <option value=""></option>
-            @for (c of countryOptions; track c.id) {
-              <option [value]="c.id">{{ c.name }}</option>
+            @for (p of placeOptions; track p.id) {
+              <option [value]="p.id">{{ p.name }}</option>
             }
           </select>
           <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
         </div>
-        @if (errors().country) { <span class="field-error">{{ errors().country }}</span> }
       </div>
-      <label class="col-rlbl">{{ 'journeyForm.labelPlace' | translate }}</label>
-      <div class="field-wrapper col-rctl">
-        <select class="filter-input" [value]="placeId()" (change)="placeId.set($any($event.target).value)">
-          <option value=""></option>
-          @for (p of placeOptions; track p.id) {
-            <option [value]="p.id">{{ p.name }}</option>
-          }
-        </select>
-        <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
-      </div>
-    </div>
 
-    <div class="form-row">
-      <label class="col-lbl required">{{ 'journeyForm.labelStartDate' | translate }}</label>
-      <div class="col-lctl">
-        <input class="filter-input" [class.input-error]="errors().startDate" type="date" [value]="startDate()" (change)="onStartDateChange($any($event.target).value)" />
-        @if (errors().startDate) { <span class="field-error">{{ errors().startDate }}</span> }
+      <div class="form-row">
+        <label class="col-lbl required">{{ 'journeyForm.labelStartDate' | translate }}</label>
+        <div class="col-lctl">
+          <input class="filter-input" [class.input-error]="errors().startDate" type="date" [value]="startDate()" (change)="onStartDateChange($any($event.target).value)" />
+          @if (errors().startDate) { <span class="field-error">{{ errors().startDate }}</span> }
+        </div>
+        <label class="col-rlbl">{{ 'journeyForm.labelEndDate' | translate }}</label>
+        <div class="col-rctl">
+          <input class="filter-input" [class.input-error]="errors().endDate" type="date" [value]="endDate()" (change)="onEndDateChange($any($event.target).value)" />
+          @if (errors().endDate) { <span class="field-error">{{ errors().endDate }}</span> }
+        </div>
       </div>
-      <label class="col-rlbl">{{ 'journeyForm.labelEndDate' | translate }}</label>
-      <div class="col-rctl">
-        <input class="filter-input" [class.input-error]="errors().endDate" type="date" [value]="endDate()" (change)="onEndDateChange($any($event.target).value)" />
-        @if (errors().endDate) { <span class="field-error">{{ errors().endDate }}</span> }
-      </div>
-    </div>
 
-    <div class="form-row">
-      <label class="col-lbl">{{ 'journeyForm.labelCurrency' | translate }}</label>
-      <div class="field-wrapper col-lctl">
-        <select class="filter-input" [value]="currencyId()" (change)="currencyId.set($any($event.target).value)">
-          <option value=""></option>
-          @for (c of currencyOptions; track c.id) {
-            <option [value]="c.id">{{ c.code }} - {{ c.name }}</option>
-          }
-        </select>
-        <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
-      </div>
-      <label class="col-rlbl">{{ 'journeyForm.labelAmount' | translate }}</label>
-      <input class="filter-input col-rctl" type="number" [value]="amount()" (input)="amount.set($any($event.target).value)" [placeholder]="('journeyForm.labelAmount' | translate)" />
-    </div>
-
-    <div class="form-row">
-      <label class="col-lbl">{{ 'journeyForm.labelDuration' | translate }}</label>
-      <div class="duration-group col-lctl">
-        <input class="filter-input duration-box" [class.input-error]="errors().durationDay" type="number" [value]="durationDay()" (input)="durationDay.set($any($event.target).value); clearError('durationDay')" aria-label="Days" />
-        <span class="duration-label">{{ 'journeyForm.day' | translate }}</span>
-        <input class="filter-input duration-box" [class.input-error]="errors().durationNight" type="number" [value]="durationNight()" (input)="durationNight.set($any($event.target).value); clearError('durationNight')" aria-label="Nights" />
-        <span class="duration-label">{{ 'journeyForm.night' | translate }}</span>
-        @if (errors().duration || errors().durationDay || errors().durationNight) {
-          <span class="field-error duration-error">{{ errors().duration || errors().durationDay || errors().durationNight }}</span>
-        }
-      </div>
-      <label class="col-rlbl required">{{ 'journeyForm.labelStatus' | translate }}</label>
-      <div class="col-rctl">
-        <div class="field-wrapper">
-          <select class="filter-input" [class.input-error]="errors().status" [value]="status()" (change)="status.set($any($event.target).value); clearError('status')">
-            @for (s of statusOptions; track s) {
-              <option [value]="s">{{ 'status.' + s | translate }}</option>
+      <div class="form-row">
+        <label class="col-lbl">{{ 'journeyForm.labelCurrency' | translate }}</label>
+        <div class="field-wrapper col-lctl">
+          <select class="filter-input" [value]="currencyId()" (change)="currencyId.set($any($event.target).value)">
+            <option value=""></option>
+            @for (c of currencyOptions; track c.id) {
+              <option [value]="c.id">{{ c.code }} - {{ c.name }}</option>
             }
           </select>
           <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
         </div>
-        @if (errors().status) { <span class="field-error">{{ errors().status }}</span> }
+        <label class="col-rlbl">{{ 'journeyForm.labelAmount' | translate }}</label>
+        <input class="filter-input col-rctl" type="number" [value]="amount()" (input)="amount.set($any($event.target).value)" [placeholder]="('journeyForm.labelAmount' | translate)" />
       </div>
-    </div>
 
+      <div class="form-row">
+        <label class="col-lbl">{{ 'journeyForm.labelDuration' | translate }}</label>
+        <div class="duration-group col-lctl">
+          <input class="filter-input duration-box" [class.input-error]="errors().durationDay" type="number" [value]="durationDay()" (input)="durationDay.set($any($event.target).value); clearError('durationDay')" aria-label="Days" />
+          <span class="duration-label">{{ 'journeyForm.day' | translate }}</span>
+          <input class="filter-input duration-box" [class.input-error]="errors().durationNight" type="number" [value]="durationNight()" (input)="durationNight.set($any($event.target).value); clearError('durationNight')" aria-label="Nights" />
+          <span class="duration-label">{{ 'journeyForm.night' | translate }}</span>
+          @if (errors().duration || errors().durationDay || errors().durationNight) {
+            <span class="field-error duration-error">{{ errors().duration || errors().durationDay || errors().durationNight }}</span>
+          }
+        </div>
+        <label class="col-rlbl required">{{ 'journeyForm.labelStatus' | translate }}</label>
+        <div class="col-rctl">
+          <div class="field-wrapper">
+            <select class="filter-input" [class.input-error]="errors().status" [value]="status()" (change)="status.set($any($event.target).value); clearError('status')">
+              @for (s of statusOptions; track s) {
+                <option [value]="s">{{ 'status.' + s | translate }}</option>
+              }
+            </select>
+            <mat-icon class="chevron">keyboard_arrow_down</mat-icon>
+          </div>
+          @if (errors().status) { <span class="field-error">{{ errors().status }}</span> }
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <div class="card-divider"></div>

@@ -2,7 +2,7 @@
 .journey-table th { padding: 14px 12px; text-align: left; font-size: 13px; font-weight: 700; color: #202438; text-transform: uppercase; border-bottom: 1px dashed #e2e6ef; }
 .journey-table td { padding: 12px; font-size: 14px; font-weight: 600; color: #202438; border-bottom: 1px dashed #e2e6ef; vertical-align: middle; }
 .col-check { width: 5%; }
-.col-name { width: 12%; }
+.col-name { width: 18%; }
 .col-desc { width: 25%; }
 .col-country { width: 8%; }
 .col-date { width: 8%; }
