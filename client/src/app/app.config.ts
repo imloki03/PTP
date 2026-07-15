@@ -9,6 +9,7 @@ import { TranslateHttpLoader, provideTranslateHttpLoader } from '@ngx-translate/
 import { routes } from './app.routes';
 import { errorInterceptor } from './config/error-interceptor';
 import { langInterceptor } from './config/lang-interceptor';
+import { loadingInterceptor } from './config/loading-interceptor';
 import { snackbarInterceptor } from './config/snackbar-interceptor';
 import { PaginatorI18nService } from './services/paginator-i18n.service';
 
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([errorInterceptor, langInterceptor, snackbarInterceptor])),
+    provideHttpClient(withInterceptors([errorInterceptor, langInterceptor, snackbarInterceptor, loadingInterceptor])),
     { provide: MatPaginatorIntl, useClass: PaginatorI18nService },
     provideTranslateHttpLoader({ prefix: './assets/i18n/', suffix: '.json' }),
     provideTranslateService({ loader: TranslateHttpLoader, lang: 'en' }),

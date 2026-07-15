@@ -79,3 +79,15 @@
 }
 .lang-option.active { color: #fff; }
 .lang-sep { color: rgba(255, 255, 255, 0.5); font-weight: 300; font-size: 14px; }
+
+mat-progress-bar {
+  position: fixed;
+  top: 3.5rem;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+mat-progress-bar.hidden {
+  visibility: hidden;
+}
