@@ -17,6 +17,20 @@ html {
       density: 0,
     )
   );
+
+  @include mat.snack-bar-overrides((
+    container-color: #1fc59b,
+    supporting-text-color: #fff,
+    container-shape: 12px,
+  ));
+
+  .app-snackbar-error {
+    @include mat.snack-bar-overrides((
+      container-color: #ff345b,
+      supporting-text-color: #fff,
+      container-shape: 12px,
+    ));
+  }
 }
 
 body {
