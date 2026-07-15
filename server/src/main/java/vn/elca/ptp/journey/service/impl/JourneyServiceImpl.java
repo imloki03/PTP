@@ -62,7 +62,7 @@ public class JourneyServiceImpl implements JourneyService {
     @Override
     @Transactional(readOnly = true)
     public JourneyDTO getJourney(Long journeyId) {
-        Journey journey = journeyRepository.findById(journeyId)
+        Journey journey = journeyRepository.findByIdAndStatusNot(journeyId, JourneyStatus.DELETED)
                 .orElseThrow(() -> new EntityNotFoundException(
                         messageBundleUtils.getMessage(JOURNEY_NOT_FOUND, journeyId)));
         return journeyMapper.toDto(journey);
@@ -70,7 +70,7 @@ public class JourneyServiceImpl implements JourneyService {
 
     @Override
     public JourneyDTO updateJourney(Long journeyId, JourneyRequest request) {
-        Journey existing = journeyRepository.findById(journeyId)
+        Journey existing = journeyRepository.findByIdAndStatusNot(journeyId, JourneyStatus.DELETED)
                 .orElseThrow(() -> new EntityNotFoundException(
                         messageBundleUtils.getMessage(JOURNEY_NOT_FOUND, journeyId)));
         journeyMapper.updateEntity(existing, request);
