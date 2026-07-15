@@ -2,12 +2,13 @@
   <div class="journey-image-manager journey-image-manager--empty">
     <button type="button" class="add-image-tile add-image-tile--large" (click)="fileInput.click()" [disabled]="disabled()">
       <svg class="add-icon" viewBox="0 0 280 255" aria-hidden="true">
-        <rect x="60" y="0" width="160" height="40" rx="8" fill="#B2B2C1"/>
-        <rect x="20" y="60" width="240" height="40" rx="8" fill="#B2B2C1"/>
-        <rect x="60" y="120" width="160" height="40" rx="8" fill="#B2B2C1"/>
-        <rect x="0" y="180" width="280" height="40" rx="8" fill="#B2B2C1"/>
-        <line x1="140" y1="60" x2="140" y2="120" stroke="#B2B2C1" stroke-width="6" stroke-linecap="round"/>
-        <line x1="110" y1="90" x2="170" y2="90" stroke="#B2B2C1" stroke-width="6" stroke-linecap="round"/>
+        <rect x="25" y="20" width="230" height="215" rx="20" stroke="#B2B2C1" stroke-width="5" fill="none"/>
+        <polygon points="55,210 130,90 205,210" fill="#B2B2C1" opacity="0.3"/>
+        <polygon points="100,210 165,120 230,210" fill="#B2B2C1" opacity="0.18"/>
+        <circle cx="195" cy="70" r="25" fill="#B2B2C1" opacity="0.25"/>
+        <circle cx="235" cy="40" r="30" fill="#B2B2C1"/>
+        <line x1="235" y1="24" x2="235" y2="56" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+        <line x1="219" y1="40" x2="251" y2="40" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
       </svg>
     </button>
     <input #fileInput type="file" accept="image/*" multiple (change)="onFilesSelected($event)" hidden />
@@ -36,8 +37,12 @@
         </div>
       }
       <button type="button" class="add-image-tile add-image-tile--thumbnail" (click)="fileInput2.click()">
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#B2B2C1" stroke-width="2" stroke-linecap="round">
-          <line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/>
+        <svg viewBox="0 0 24 24" width="36" height="36" fill="none" aria-hidden="true">
+          <rect x="2" y="4" width="20" height="16" rx="3" stroke="#B2B2C1" stroke-width="1.5"/>
+          <polygon points="5,18 10,10 15,18" fill="#B2B2C1" opacity="0.3"/>
+          <polygon points="9,18 14,12 19,18" fill="#B2B2C1" opacity="0.18"/>
+          <line x1="12" y1="6" x2="12" y2="10" stroke="#B2B2C1" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="10" y1="8" x2="14" y2="8" stroke="#B2B2C1" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </button>
       <input #fileInput2 type="file" accept="image/*" multiple (change)="onFilesSelected($event)" hidden />

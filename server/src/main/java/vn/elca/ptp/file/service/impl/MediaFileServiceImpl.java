@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import vn.elca.ptp.common.event.MediaFilesChangedEvent;
 import vn.elca.ptp.file.config.FileProperties;
 import vn.elca.ptp.file.domain.MediaFile;
@@ -20,6 +21,7 @@ import vn.elca.ptp.file.service.FileStorageService;
 import vn.elca.ptp.file.service.MediaFileService;
 import vn.elca.ptp.file.util.MediaFileUtils;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -32,19 +34,40 @@ public class MediaFileServiceImpl implements MediaFileService {
 
     @Override
     public List<MediaFileDTO> uploadFiles(Long journeyId, List<MultipartFile> files) {
-        List<MediaFile> saved = new ArrayList<>();
-        //TODO improve performance
+        List<MediaFile> entries = new ArrayList<>();
+        List<MediaFile> savedToDisk = new ArrayList<>();
+
         for (MultipartFile file : files) {
             MediaFile entry = createEntry(journeyId, file);
-            //TODO rollback
-            String url = fileStorageService.save(entry, file);
-            entry.setUrl(url);
-            saved.add(mediaFileRepository.save(entry));
+            entries.add(entry);
+            try {
+                String url = fileStorageService.save(entry, file);
+                entry.setUrl(url);
+                savedToDisk.add(entry);
+            } catch (Exception e) {
+                cleanupFiles(savedToDisk);
+                throw new RuntimeException("Failed to store file: " + file.getOriginalFilename(), e);
+            }
         }
 
-        publishFirstImageEvent(journeyId);
+        try {
+            List<MediaFile> persisted = mediaFileRepository.saveAll(entries);
+            publishFirstImageEvent(journeyId);
+            return persisted.stream().map(mediaFileMapper::toDto).toList();
+        } catch (Exception e) {
+            cleanupFiles(savedToDisk);
+            throw new RuntimeException("Failed to persist file metadata", e);
+        }
+    }
 
-        return saved.stream().map(mediaFileMapper::toDto).toList();
+    private void cleanupFiles(List<MediaFile> files) {
+        for (MediaFile file : files) {
+            try {
+                fileStorageService.delete(file);
+            } catch (Exception e) {
+                log.warn("Failed to clean up file after rollback: {}", file.getFileName(), e);
+            }
+        }
     }
 
     @Override

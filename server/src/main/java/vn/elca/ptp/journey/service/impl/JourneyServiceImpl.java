@@ -49,7 +49,6 @@ public class JourneyServiceImpl implements JourneyService {
         return journeyMapper.toDto(journey);
     }
 
-    //TODO offset issue
     @Override
     @Transactional(readOnly = true)
     public Page<JourneyDTO> searchJourneys(Pageable pageable, JourneyFilter filter) {
@@ -90,7 +89,8 @@ public class JourneyServiceImpl implements JourneyService {
         if (CollectionUtils.isEmpty(ids)) {
             return;
         }
-        //TODO: partition
+
+        // partition ? -> limit to -> usecase này ko cần
         List<Journey> journeys = journeyRepository.findAllById(ids);
         journeys.forEach(j -> j.setStatus(JourneyStatus.DELETED));
         journeyRepository.saveAll(journeys);
