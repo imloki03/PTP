@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, output} from '@angular/core';
+import {Component, inject, OnInit, output, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
@@ -21,8 +21,8 @@ export class JourneySearchPanel implements OnInit {
   private readonly countryService = inject(CountryService);
   private readonly currencyService = inject(CurrencyService);
 
-  countries: Country[] = [];
-  currencies: Currency[] = [];
+  countries = signal<Country[]>([]);
+  currencies = signal<Currency[]>([]);
   readonly onSearch = output<JourneyFilter>();
   readonly onReset = output<void>();
 
@@ -40,23 +40,23 @@ export class JourneySearchPanel implements OnInit {
   ngOnInit() {
     this.countryService.getCountries().subscribe((res) => {
       if (res.data) {
-        this.countries = res.data;
+        this.countries.set(res.data);
       }
     });
 
     this.currencyService.getCurrencies().subscribe((res) => {
       if (res.data) {
-        this.currencies = res.data;
+        this.currencies.set(res.data);
       }
     })
   }
 
   get countryOptions() {
-    return this.countries.map((c) => ({ value: c.id, label: `${c.name}` }));
+    return this.countries().map((c) => ({ value: c.id, label: `${c.name}` }));
   }
 
   get currencyOptions() {
-    return this.currencies.map((c) => ({ value: c.id, label: `${c.name}` }));
+    return this.currencies().map((c) => ({ value: c.id, label: `${c.name}` }));
   }
 
   get statusOptions() {
