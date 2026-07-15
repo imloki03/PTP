@@ -8,10 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import vn.elca.ptp.common.event.JourneysDeletedEvent;
 import vn.elca.ptp.file.domain.MediaFile;
 import vn.elca.ptp.file.repository.MediaFileRepository;
 import vn.elca.ptp.file.service.FileStorageService;
+import vn.elca.ptp.journey.JourneysDeletedEvent;
 
 @Slf4j
 @Service

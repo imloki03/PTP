@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import vn.elca.ptp.common.event.JourneysDeletedEvent;
 import vn.elca.ptp.common.util.MessageBundleUtils;
+import vn.elca.ptp.journey.JourneysDeletedEvent;
 import vn.elca.ptp.journey.domain.Journey;
 import vn.elca.ptp.journey.domain.Place;
 import vn.elca.ptp.journey.domain.enums.JourneyStatus;

@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import vn.elca.ptp.common.event.MediaFilesChangedEvent;
+import vn.elca.ptp.file.MediaFilesChangedEvent;
 import vn.elca.ptp.journey.domain.Journey;
 
 @Slf4j
