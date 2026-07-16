@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, output, signal} from '@angular/core';
+import {Component, inject, input, OnInit, output, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
@@ -25,6 +25,7 @@ export class JourneySearchPanel implements OnInit {
   currencies = signal<Currency[]>([]);
   readonly onSearch = output<JourneyFilter>();
   readonly onReset = output<void>();
+  readonly initialFilter = input<JourneyFilter | null>(null);
 
   searchQuery = '';
   selectedCountry: string | number = '';
@@ -48,7 +49,25 @@ export class JourneySearchPanel implements OnInit {
       if (res.data) {
         this.currencies.set(res.data);
       }
-    })
+    });
+
+    const saved = this.initialFilter();
+    if (saved) {
+      this.applyFilter(saved);
+    }
+  }
+
+  private applyFilter(f: JourneyFilter) {
+    this.searchQuery = f.searchQuery ?? '';
+    this.selectedCountry = f.countryId ?? '';
+    this.selectedCurrency = f.currencyId ?? '';
+    this.selectedStatus = f.status ?? '';
+    this.amountFrom = f.amountFrom ?? '';
+    this.amountTo = f.amountTo ?? '';
+    this.startDate = f.startDateFrom ?? '';
+    this.startDateTo = f.startDateTo ?? '';
+    this.endDate = f.endDateFrom ?? '';
+    this.endDateTo = f.endDateTo ?? '';
   }
 
   get countryOptions() {

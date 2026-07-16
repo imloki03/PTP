@@ -10,6 +10,7 @@ import {JourneyTable} from '../../components/journey-table/journey-table';
 import type {PageEvent} from '@angular/material/paginator';
 import type {Journey} from '../../models/journey';
 import type {JourneyFilter} from '../../models/journey-filter';
+import {JourneyFilterStateService} from '../../services/journey-filter-state';
 import {JourneyService} from '../../services/journey';
 
 @Component({
@@ -24,6 +25,7 @@ import {JourneyService} from '../../services/journey';
 export class Homepage implements OnInit {
   private readonly router = inject(Router);
   private readonly journeyService = inject(JourneyService);
+  private readonly filterState = inject(JourneyFilterStateService);
   private readonly dialog = inject(MatDialog);
   protected readonly translate = inject(TranslateService);
 
@@ -32,18 +34,19 @@ export class Homepage implements OnInit {
   pageSize = signal(5);
   page = signal(0);
   selectedIds = signal<number[]>([]);
-  filter = signal<JourneyFilter>({});
 
   ngOnInit() {
     this.loadJourneys();
   }
+
+  protected readonly initialFilter = this.filterState.filter.asReadonly();
 
   get allSelected(): boolean {
     return this.journeys().length > 0 && this.selectedIds().length === this.journeys().length;
   }
 
   loadJourneys() {
-    this.journeyService.searchJourneys(this.page(), this.pageSize(), this.filter()).subscribe((res) => {
+    this.journeyService.searchJourneys(this.page(), this.pageSize(), this.filterState.filter()).subscribe((res) => {
       if (!res.data) { return; }
       this.journeys.set(res.data.content);
       this.totalElements.set(res.data.totalElements);
@@ -62,13 +65,13 @@ export class Homepage implements OnInit {
   }
 
   onSearch(filter: JourneyFilter) {
-    this.filter.set(filter);
+    this.filterState.filter.set(filter);
     this.page.set(0);
     this.loadJourneys();
   }
 
   onReset() {
-    this.filter.set({});
+    this.filterState.filter.set({});
     this.page.set(0);
     this.loadJourneys();
   }

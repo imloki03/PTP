@@ -17,6 +17,7 @@
 <!-- Main Card -->
 <main class="journey-card">
   <app-journey-search-panel
+    [initialFilter]="initialFilter()"
     (onSearch)="onSearch($event)"
     (onReset)="onReset()"
   />
