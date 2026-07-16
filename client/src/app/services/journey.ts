@@ -27,12 +27,16 @@ export class JourneyService {
     return this.http.post<ApiResponse<Journey>>(this.baseUrl, request);
   }
 
-  updateJourney(id: number, request: JourneyRequest): Observable<ApiResponse<Journey>> {
-    return this.http.put<ApiResponse<Journey>>(`${this.baseUrl}/${id}`, request);
+  private selfHref(journey: Journey): string {
+    return journey.links.find(l => l.rel === 'self')!.href;
   }
 
-  deleteJourney(id: number): Observable<ApiResponse<null>> {
-    return this.http.delete<ApiResponse<null>>(`${this.baseUrl}/${id}`);
+  updateJourney(journey: Journey, request: JourneyRequest): Observable<ApiResponse<Journey>> {
+    return this.http.put<ApiResponse<Journey>>(this.selfHref(journey), request);
+  }
+
+  deleteJourney(journey: Journey): Observable<ApiResponse<null>> {
+    return this.http.delete<ApiResponse<null>>(this.selfHref(journey));
   }
 
   deleteJourneys(ids: number[]): Observable<ApiResponse<null>> {

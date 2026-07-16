@@ -13,6 +13,7 @@ import {ConfirmImageDeletionDialog} from '../../ui/confirm-image-deletion-dialog
 import {PageLayout} from '../page-layout/page-layout';
 import type {Country} from '../../models/country';
 import type {Currency} from '../../models/currency';
+import type {Journey} from '../../models/journey';
 import type {JourneyImageItem} from '../../models/journey-image-item';
 import type {Place} from '../../models/place';
 import type {JourneyRequest} from '../../models/journey-request';
@@ -41,6 +42,7 @@ export class JourneyForm implements OnInit, OnDestroy {
 
   mode: 'create' | 'edit' = 'create';
   journeyId: number | null = null;
+  private loadedJourney: Journey | null = null;
 
   countries = signal<Country[]>([]);
   currencies = signal<Currency[]>([]);
@@ -215,6 +217,7 @@ export class JourneyForm implements OnInit, OnDestroy {
     this.journeyService.getJourney(id).subscribe(res => {
       if (!res.data) { return; }
       const j = res.data;
+      this.loadedJourney = j;
       this.version.set(j.version);
       this.name.set(j.name);
       this.description.set(j.description);
@@ -455,7 +458,7 @@ export class JourneyForm implements OnInit, OnDestroy {
       });
     } else {
       const doUpdate = () => {
-        this.journeyService.updateJourney(this.journeyId!, request).subscribe({
+        this.journeyService.updateJourney(this.loadedJourney!, request).subscribe({
           next: () => {
             this.saving.set(false);
             this.router.navigate(['/journeys']);

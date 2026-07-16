@@ -1,11 +1,8 @@
 export interface HateoasLink {
+  rel: string;
   href: string;
 }
 
-export interface HateoasLinks {
-  self: HateoasLink;
-}
-
 export interface HateoasResource {
-  _links: HateoasLinks;
+  links: HateoasLink[];
 }

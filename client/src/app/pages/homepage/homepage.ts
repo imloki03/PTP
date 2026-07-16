@@ -100,12 +100,13 @@ export class Homepage implements OnInit {
   }
 
   onDelete(id: number) {
-    const name = this.journeys().find((j) => j.id === id)?.name ?? '';
+    const journey = this.journeys().find((j) => j.id === id);
+    if (!journey) { return; }
     this.dialog.open(ConfirmDialog, {
       data: this.translate.instant('dialog.confirmDelete'),
     }).afterClosed().subscribe((confirmed) => {
       if (confirmed) {
-        this.journeyService.deleteJourney(id).subscribe(() => this.loadJourneys());
+        this.journeyService.deleteJourney(journey).subscribe(() => this.loadJourneys());
       }
     });
   }

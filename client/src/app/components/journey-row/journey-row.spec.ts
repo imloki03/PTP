@@ -16,7 +16,7 @@ describe('JourneyRow', () => {
     currency: { id: 1, code: 'VND', name: 'Vietnamese Dong' },
     amount: 1000000, durationDay: 1, durationNight: 0,
     status: 'PLANNING',
-    _links: { self: { href: '/api/journeys/1' } },
+    links: [{ rel: 'self', href: '/api/journeys/1' }],
   };
 
   beforeEach(async () => {
